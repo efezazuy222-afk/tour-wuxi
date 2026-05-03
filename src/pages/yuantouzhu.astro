@@ -1,0 +1,101 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>鼋头渚导游服务_太湖赏樱路线推荐_澜青旅行社</title>
+  <meta name="description" content="澜青旅行社提供无锡鼋头渚专业导游服务，太湖赏樱路线规划、深度讲解、拍照打卡点推荐。春季樱花季、全年导游预约。" />
+  <meta name="keywords" content="鼋头渚导游,太湖导游,赏樱路线,无锡旅游" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #1a6b52; --dark: #0f172a; --text: #1e293b; --text-light: #64748b;
+      --bg: #f8fafc; --bg2: #f1f5f9; --white: #fff; --border: #e2e8f0;
+      --shadow: 0 4px 24px rgba(0,0,0,0.06); --radius: 12px;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; color: var(--text); line-height: 1.7; background: var(--bg); }
+    
+    .hero { background: linear-gradient(160deg, #1a3c34, #2d6a4f, #4a9e7e, #88c9a1); color: #fff; padding: 70px 20px; text-align: center; }
+    .hero-content { max-width: 700px; margin: 0 auto; }
+    .hero-badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 6px 18px; border-radius: 20px; font-size: 0.9rem; margin-bottom: 20px; }
+    .hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 14px; text-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+    .hero p { font-size: 1.15rem; opacity: 0.92; margin-bottom: 28px; }
+    .btn-primary { background: #fff; color: #1a6b52; padding: 14px 32px; border-radius: 30px; text-decoration: none; font-weight: 700; }
+    
+    .section { max-width: 1200px; margin: 0 auto; padding: 50px 20px; }
+    .section h2 { font-size: 1.6rem; color: #1a6b52; margin-bottom: 20px; padding-left: 14px; border-left: 4px solid #1a6b52; }
+    .highlight-box { background: #f0f7f4; border: 1px solid #c8e0d4; border-radius: 10px; padding: 18px 22px; margin: 16px 0; }
+    .highlight-box strong { color: #1a6b52; }
+    
+    .price-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    .price-table th { background: #1a6b52; color: #fff; padding: 12px 16px; text-align: left; }
+    .price-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+    .price-col { color: #c0392b; font-weight: 700; }
+    
+    .cta-section { background: linear-gradient(135deg, #0f172a, #1e293b); color: #fff; text-align: center; padding: 64px 20px; }
+    .cta-phone { font-size: 2.6rem; font-weight: 800; color: #4ade80; margin: 16px 0; }
+    .btn-cta { display: inline-block; background: #22c55e; color: #fff; padding: 14px 32px; border-radius: 28px; text-decoration: none; font-weight: 700; margin: 8px; }
+    .btn-cta-white { display: inline-block; background: #fff; color: #0f172a; padding: 14px 32px; border-radius: 28px; text-decoration: none; font-weight: 700; margin: 8px; }
+    
+    @media (max-width: 768px) { .hero h1 { font-size: 2rem; } .cta-phone { font-size: 2rem; } }
+  </style>
+</head>
+<body>
+  <Header />
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">🏆 国家5A级景区 · 太湖第一名胜</div>
+        <h1>鼋头渚导游服务</h1>
+        <p>澜青旅行社专业导游带您领略太湖绝佳处，赏樱花、观湖景、品文化</p>
+        <a href="#contact" class="btn-primary">📞 立即预约导游</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>🖼️ 鼋头渚概况</h2>
+      <p>鼋头渚是无锡最著名的自然景区之一，位于太湖之滨，因形似神龟探水而得名。作为<strong>国家5A级旅游景区</strong>，这里集太湖风光、古典园林、佛教文化于一体，被誉为"太湖第一名胜"。</p>
+      <p>景区面积约<strong>500公顷</strong>，每年<strong>3月中旬至4月下旬</strong>的樱花季，是国内三大赏樱胜地之一。</p>
+    </section>
+
+    <section class="section">
+      <h2>🗺️ 经典游览路线</h2>
+      <div class="highlight-box"><strong>🔥 樱花季黄金路线（3小时）：</strong><br>充山大门 → 樱花谷 → 长春桥 → 鼋渚春涛 → 太湖游船码头 → 太湖仙岛</div>
+      <div class="highlight-box"><strong>📸 摄影打卡路线（半天）：</strong><br>鹿顶迎晖（日出）→ 漕湾秋色 → 万浪卷雪 → 长春桥（日落）→ 夜樱观赏</div>
+    </section>
+
+    <section class="section">
+      <h2>👨‍💼 导游服务与价格</h2>
+      <table class="price-table">
+        <thead><tr><th>服务类型</th><th>时长</th><th>人数</th><th>价格</th></tr></thead>
+        <tbody>
+          <tr><td>散客拼团讲解</td><td>2.5小时</td><td>15人</td><td class="price-col">¥88/人</td></tr>
+          <tr><td>私家导游</td><td>4小时</td><td>6人</td><td class="price-col">¥398/组</td></tr>
+          <tr><td>深度文化讲解</td><td>全天</td><td>6人</td><td class="price-col">¥688/组</td></tr>
+          <tr><td>摄影跟拍+导游</td><td>4小时</td><td>4人</td><td class="price-col">¥598/组</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>🌸 四季景观</h2>
+      <p><strong>春（3-5月）</strong>—— 樱花、桃花盛放；<strong>夏（6-8月）</strong>—— 荷花满池，太湖烟波；<strong>秋（9-11月）</strong>—— 红枫银杏；<strong>冬（12-2月）</strong>—— 候鸟聚集，太湖落日壮美。</p>
+    </section>
+
+    <section class="cta-section" id="contact">
+      <h2>📞 预约澜青导游</h2>
+      <p>微信：<strong style="color:#4ade80;">18012361217</strong></p>
+      <div class="cta-phone">400-858-0518</div>
+      <p style="color:#94a3b8;">支持当天预约 / 节假日正常接单</p>
+      <a href="tel:4008580518" class="btn-cta">📞 直接拨打</a>
+      <a href="weixin://dl/chat?18012361217" class="btn-cta-white">💬 微信咨询</a>
+    </section>
+  </main>
+  <Footer />
+</body>
+</html>

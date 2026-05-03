@@ -1,17 +1,318 @@
 ---
-
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>澜青旅行社_无锡导游_私人导游讲解_无锡一日游定制服务</title>
+  <meta name="description" content="澜青旅行社提供无锡本地专业导游服务，覆盖鼋头渚、灵山大佛、拈花湾、太湖等核心景点。私人定制路线、深度文化讲解、一对一品质带玩，支持当天预约。" />
+  <meta name="keywords" content="澜青旅行社,无锡导游,无锡一日游,私人导游,无锡旅游,鼋头渚导游,灵山大佛导游" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.lanqingtravel.com/" />
+  
+  <meta property="og:title" content="澜青旅行社_无锡专业导游服务" />
+  <meta property="og:description" content="无锡本地导游，私人定制路线，深度讲解，品质带玩" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.lanqingtravel.com/" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #1a6b52;
+      --primary-light: #2d8a6e;
+      --accent: #22c55e;
+      --dark: #0f172a;
+      --dark2: #1e293b;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --bg: #f8fafc;
+      --bg2: #f1f5f9;
+      --white: #ffffff;
+      --border: #e2e8f0;
+      --shadow: 0 4px 24px rgba(0,0,0,0.06);
+      --shadow-lg: 0 12px 48px rgba(0,0,0,0.1);
+      --radius: 12px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg);
+    }
+
+    .hero {
+      background: linear-gradient(160deg, #0a1f1a 0%, #0f2a22 20%, #153d2f 50%, #1a5c40 80%, #1f7a4e 100%);
+      color: #fff;
+      padding: 70px 20px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 0.88rem;
+      margin-bottom: 24px;
+      letter-spacing: 1px;
+    }
+    .hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 16px; line-height: 1.3; text-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+    .hero h1 span { color: #4ade80; }
+    .hero-subtitle { font-size: 1.15rem; opacity: 0.9; margin-bottom: 12px; }
+    .hero-dest { font-size: 0.95rem; opacity: 0.75; margin-bottom: 36px; }
+    .hero-dest strong { color: #fbbf24; }
+    .hero-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    
+    .btn-hero-primary {
+      background: #22c55e; color: #fff; padding: 15px 36px; border-radius: 30px;
+      text-decoration: none; font-weight: 700; font-size: 1.05rem;
+      transition: all 0.3s; box-shadow: 0 6px 24px rgba(34,197,94,0.35);
+    }
+    .btn-hero-primary:hover { background: #16a34a; transform: translateY(-2px); box-shadow: 0 10px 32px rgba(34,197,94,0.5); }
+    
+    .btn-hero-outline {
+      background: transparent; color: #fff; padding: 15px 36px; border-radius: 30px;
+      text-decoration: none; font-weight: 600; border: 2px solid rgba(255,255,255,0.5); transition: all 0.3s;
+    }
+    .btn-hero-outline:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+
+    .trust-bar { background: #fff; border-bottom: 1px solid var(--border); padding: 18px 20px; text-align: center; }
+    .trust-items { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
+    .trust-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--text-light); font-weight: 500; }
+    .trust-item .icon { font-size: 1.3rem; }
+
+    .section { max-width: 1200px; margin: 0 auto; padding: 56px 20px; }
+    .section-header { text-align: center; margin-bottom: 44px; }
+    .section-header h2 { font-size: 2rem; font-weight: 800; color: var(--dark); margin-bottom: 10px; }
+    .section-header p { color: var(--text-light); font-size: 1rem; }
+    .section-label {
+      display: inline-block; background: #dcfce7; color: #166534;
+      padding: 4px 14px; border-radius: 14px; font-size: 0.82rem; font-weight: 600; margin-bottom: 12px; letter-spacing: 1px;
+    }
+
+    .service-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .service-card {
+      background: #fff; border-radius: var(--radius); padding: 32px 24px; text-align: center;
+      box-shadow: var(--shadow); transition: all 0.3s; border: 1px solid transparent;
+    }
+    .service-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: #d1fae5; }
+    .service-icon { font-size: 2.4rem; margin-bottom: 16px; }
+    .service-card h3 { font-size: 1.05rem; margin-bottom: 8px; color: var(--dark); }
+    .service-card p { font-size: 0.88rem; color: var(--text-light); line-height: 1.5; }
+
+    .dest-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .dest-card {
+      background: #fff; border-radius: var(--radius); overflow: hidden;
+      box-shadow: var(--shadow); transition: all 0.3s; text-decoration: none; color: inherit; display: block;
+    }
+    .dest-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .dest-img { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 700; }
+    .dest-img.yuantouzhu { background: linear-gradient(135deg, #f9c5d0, #fde0e6); }
+    .dest-img.lingshan { background: linear-gradient(135deg, #f5d5a0, #fdf0d5); }
+    .dest-img.nianhua { background: linear-gradient(135deg, #7c8cb5, #b8c4dd); }
+    .dest-img.taihu { background: linear-gradient(135deg, #6db3c8, #b0dce8); }
+    .dest-info { padding: 18px 16px; }
+    .dest-info h3 { font-size: 1.05rem; margin-bottom: 4px; color: var(--dark); }
+    .dest-info p { font-size: 0.85rem; color: var(--text-light); }
+
+    .advantage-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; text-align: center; }
+    .advantage-item { padding: 24px 16px; }
+    .advantage-icon { font-size: 2.6rem; margin-bottom: 12px; }
+    .advantage-item h3 { font-size: 1.05rem; margin-bottom: 6px; }
+    .advantage-item p { font-size: 0.85rem; color: var(--text-light); }
+
+    .cta-section {
+      background: linear-gradient(135deg, #0f172a, #1e293b); color: #fff;
+      text-align: center; padding: 64px 20px; position: relative; overflow: hidden;
+    }
+    .cta-content { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+    .cta-section h2 { font-size: 2rem; font-weight: 800; margin-bottom: 14px; }
+    .cta-section .cta-phone { font-size: 2.6rem; font-weight: 800; letter-spacing: 2px; color: #4ade80; margin: 16px 0; }
+    .cta-section .cta-wechat { font-size: 1.3rem; margin-bottom: 8px; }
+    .cta-section .cta-note { color: #94a3b8; font-size: 0.9rem; }
+    .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+    
+    .btn-cta-green {
+      background: #22c55e; color: #fff; padding: 14px 32px; border-radius: 28px;
+      text-decoration: none; font-weight: 700; font-size: 1rem; transition: all 0.3s;
+    }
+    .btn-cta-green:hover { background: #16a34a; transform: translateY(-2px); }
+    
+    .btn-cta-white {
+      background: #fff; color: #0f172a; padding: 14px 32px; border-radius: 28px;
+      text-decoration: none; font-weight: 700; font-size: 1rem; transition: all 0.3s;
+    }
+    .btn-cta-white:hover { background: #e2e8f0; transform: translateY(-2px); }
+
+    @media (max-width: 1024px) {
+      .service-grid, .dest-grid, .advantage-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2rem; }
+      .hero { padding: 50px 20px 60px; }
+      .service-grid, .dest-grid, .advantage-row { grid-template-columns: 1fr; }
+      .trust-items { gap: 16px; }
+      .cta-section .cta-phone { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <Header />
+  
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">🏆 无锡本地持证导游 · 澜青旅行社</div>
+        <h1>无锡<span>私人导游</span>服务</h1>
+        <p class="hero-subtitle">专业讲解 · 定制路线 · 一对一品质带玩</p>
+        <p class="hero-dest">
+          覆盖 <strong>鼋头渚</strong> / <strong>灵山大佛</strong> / <strong>拈花湾</strong> / <strong>太湖风景区</strong>
+        </p>
+        <div class="hero-buttons">
+          <a href="#contact" class="btn-hero-primary">📞 立即预约导游</a>
+          <a href="/wuxi-one-day-tour" class="btn-hero-outline">🗺️ 查看一日游路线</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="trust-bar">
+      <div class="trust-items">
+        <div class="trust-item"><span class="icon">🎖️</span> 持证导游</div>
+        <div class="trust-item"><span class="icon">💰</span> 价格透明</div>
+        <div class="trust-item"><span class="icon">🛡️</span> 正规旅行社</div>
+        <div class="trust-item"><span class="icon">⭐</span> 好评率98%</div>
+        <div class="trust-item"><span class="icon">⚡</span> 当天可约</div>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-label">我们的服务</span>
+        <h2>澜青旅行社能为您做什么</h2>
+        <p>不只是带路，更是让您真正读懂无锡</p>
+      </div>
+      <div class="service-grid">
+        <div class="service-card">
+          <div class="service-icon">🎯</div>
+          <h3>无锡一日游定制</h3>
+          <p>根据您的兴趣和时间，量身设计最佳路线</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">📖</div>
+          <h3>景点深度讲解</h3>
+          <p>历史典故、建筑美学、佛教文化，细致入微</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">👨‍👩‍👧‍👦</div>
+          <h3>家庭/情侣/摄影团</h3>
+          <p>不同人群专属玩法，亲子互动、网红机位全掌握</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🚗</div>
+          <h3>无锡包车服务</h3>
+          <p>导游+车辆一站式安排，省心游玩不赶路</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: var(--bg2);">
+      <div class="section-header">
+        <span class="section-label">热门景点</span>
+        <h2>无锡必游打卡地</h2>
+        <p>澜青导游带您走遍每个精华角落</p>
+      </div>
+      <div class="dest-grid">
+        <a href="/yuantouzhu" class="dest-card">
+          <div class="dest-img yuantouzhu">🌸</div>
+          <div class="dest-info">
+            <h3>鼋头渚</h3>
+            <p>太湖第一名胜 · 赏樱胜地</p>
+          </div>
+        </a>
+        <a href="/lingshan" class="dest-card">
+          <div class="dest-img lingshan">🪷</div>
+          <div class="dest-info">
+            <h3>灵山大佛</h3>
+            <p>88米青铜立佛 · 佛教文化</p>
+          </div>
+        </a>
+        <a href="/nianhua" class="dest-card">
+          <div class="dest-img nianhua">🏮</div>
+          <div class="dest-info">
+            <h3>拈花湾</h3>
+            <p>唐风禅意小镇 · 夜景必打卡</p>
+          </div>
+        </a>
+        <a href="/taihu" class="dest-card">
+          <div class="dest-img taihu">⛵</div>
+          <div class="dest-info">
+            <h3>太湖风景区</h3>
+            <p>三万六千顷烟波 · 湖光山色</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-label">选择澜青</span>
+        <h2>为什么选择澜青旅行社</h2>
+        <p>四大优势，让您的无锡之旅与众不同</p>
+      </div>
+      <div class="advantage-row">
+        <div class="advantage-item">
+          <div class="advantage-icon">📍</div>
+          <h3>本地导游</h3>
+          <p>土生土长无锡人，熟悉每一条小路和隐藏机位</p>
+        </div>
+        <div class="advantage-item">
+          <div class="advantage-icon">🗓️</div>
+          <h3>行程灵活</h3>
+          <p>不走购物团，不赶时间，节奏完全由您掌控</p>
+        </div>
+        <div class="advantage-item">
+          <div class="advantage-icon">💎</div>
+          <h3>价格透明</h3>
+          <p>报价清晰无套路，无隐形消费，无强制购物</p>
+        </div>
+        <div class="advantage-item">
+          <div class="advantage-icon">✍️</div>
+          <h3>专属定制</h3>
+          <p>根据年龄、兴趣、季节定制独一无二的行程</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section" id="contact">
+      <div class="cta-content">
+        <h2>📞 立即预约澜青导游</h2>
+        <p style="font-size:1.1rem; margin-bottom:8px;">专业导游一对一服务，让您的无锡之旅不留遗憾</p>
+        <div class="cta-wechat" style="margin-bottom:6px;">
+  微信：<strong style="color:#4ade80;">18012361217</strong>
+</div>
+<div class="cta-phone" style="margin:4px 0;">400-858-0518</div>
+<div style="font-size:1.1rem; margin-bottom:16px;">
+  📧 邮箱：<strong style="color:#4ade80;">932168783@qq.com</strong>
+</div>
+        <p class="cta-note">支持当天预约 / 节假日正常接单 / 提前预约优先安排金牌导游</p>
+        <div class="cta-buttons">
+          <a href="tel:4008580518" class="btn-cta-green">📞 直接拨打</a>
+          <a href="mailto:932168783@qq.com" class="btn-cta-white">📧 发送邮件</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</body>
 </html>

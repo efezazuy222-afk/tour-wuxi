@@ -1,0 +1,122 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>无锡一日游_定制旅游路线_澜青旅行社</title>
+  <meta name="description" content="澜青旅行社提供无锡一日游定制服务，多条精选路线可选：经典太湖线、佛教文化线、古运河线、樱花专线。私人导游+包车一站式服务。" />
+  <meta name="keywords" content="无锡一日游,无锡旅游路线,无锡定制游,一日游攻略,澜青旅行社" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #1a6b52; --text: #1e293b; --text-light: #64748b; --bg: #f8fafc; --white: #fff; --border: #e2e8f0; --shadow: 0 4px 24px rgba(0,0,0,0.06); --radius: 12px; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; color: var(--text); line-height: 1.7; background: var(--bg); }
+    
+    .hero { background: linear-gradient(160deg, #7c2d12, #c2410c, #ea580c, #fb923c); color: #fff; padding: 70px 20px; text-align: center; }
+    .hero-content { max-width: 700px; margin: 0 auto; }
+    .hero-badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 6px 18px; border-radius: 20px; font-size: 0.9rem; margin-bottom: 20px; }
+    .hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 14px; }
+    .hero p { font-size: 1.15rem; opacity: 0.92; margin-bottom: 28px; }
+    .btn-primary { background: #fff; color: #c2410c; padding: 14px 32px; border-radius: 30px; text-decoration: none; font-weight: 700; }
+    
+    .section { max-width: 1200px; margin: 0 auto; padding: 50px 20px; }
+    .section h2 { font-size: 1.6rem; color: #c2410c; margin-bottom: 20px; padding-left: 14px; border-left: 4px solid #ea580c; }
+    
+    .route-card { background: #fff; border-radius: var(--radius); padding: 28px; margin-bottom: 20px; box-shadow: var(--shadow); border-left: 5px solid #ea580c; }
+    .route-card h3 { font-size: 1.2rem; color: #c2410c; margin-bottom: 8px; }
+    .route-card .time { font-size: 0.9rem; color: var(--text-light); margin-bottom: 12px; }
+    .route-card ul { list-style: none; padding-left: 0; }
+    .route-card ul li { padding: 6px 0; border-bottom: 1px dashed var(--border); }
+    .route-card ul li:last-child { border-bottom: none; }
+    .route-card ul li::before { content: "✔️ "; font-size: 0.8rem; }
+    
+    .include-box { background: #fff7ed; border: 1px solid #fed7aa; border-radius: var(--radius); padding: 20px 24px; margin: 20px 0; }
+    .include-box h3 { color: #c2410c; margin-bottom: 10px; }
+    
+    .cta-section { background: linear-gradient(135deg, #0f172a, #1e293b); color: #fff; text-align: center; padding: 64px 20px; }
+    .cta-phone { font-size: 2.6rem; font-weight: 800; color: #4ade80; margin: 12px 0; }
+    .btn-cta { display: inline-block; background: #22c55e; color: #fff; padding: 14px 32px; border-radius: 28px; text-decoration: none; font-weight: 700; margin: 8px; }
+    .btn-cta-white { display: inline-block; background: #fff; color: #0f172a; padding: 14px 32px; border-radius: 28px; text-decoration: none; font-weight: 700; margin: 8px; }
+    
+    @media (max-width: 768px) { .hero h1 { font-size: 2rem; } .cta-phone { font-size: 2rem; } }
+  </style>
+</head>
+<body>
+  <Header />
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">🗺️ 精选路线 · 深度体验</div>
+        <h1>无锡一日游定制</h1>
+        <p>多条精选路线，澜青导游带您一天玩转无锡精华</p>
+        <a href="#contact" class="btn-primary">📞 立即定制行程</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>🔥 精选一日游路线</h2>
+      
+      <div class="route-card">
+        <h3>🌸 经典太湖樱花线</h3>
+        <p class="time">⏰ 约8小时 | 最佳季节：3-4月</p>
+        <ul>
+          <li>上午：鼋头渚樱花谷 + 长春桥赏樱</li>
+          <li>中午：太湖船餐（品尝太湖三白）</li>
+          <li>下午：太湖仙岛游船 + 鼋渚春涛</li>
+          <li>傍晚：鹿顶迎晖看太湖日落</li>
+        </ul>
+      </div>
+
+      <div class="route-card">
+        <h3>🪷 佛教文化线</h3>
+        <p class="time">⏰ 约8小时 | 全年适宜</p>
+        <ul>
+          <li>上午：灵山大佛 + 抱佛脚祈福</li>
+          <li>中午：梵宫素斋体验</li>
+          <li>下午：九龙灌浴表演 + 五印坛城</li>
+          <li>傍晚：拈花湾夜游赏灯</li>
+        </ul>
+      </div>
+
+      <div class="route-card">
+        <h3>🏮 古运河文艺线</h3>
+        <p class="time">⏰ 约6小时 | 全年适宜</p>
+        <ul>
+          <li>上午：锡惠公园 + 天下第二泉</li>
+          <li>中午：南长街美食探索</li>
+          <li>下午：清名桥古运河游船</li>
+          <li>傍晚：南长街夜景 + 文艺小店</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>💰 费用说明</h2>
+      <div class="include-box">
+        <h3>✅ 费用包含</h3>
+        <p>✔️ 全程专业导游讲解 &nbsp; ✔️ 行程规划定制 &nbsp; ✔️ 景点快速购票 &nbsp; ✔️ 拍照指导</p>
+      </div>
+      <div class="include-box" style="background:#fff; border-color:#e2e8f0;">
+        <h3>❌ 费用不含</h3>
+        <p>✖️ 景区门票 &nbsp; ✖️ 个人餐饮消费 &nbsp; ✖️ 交通费用（可加选包车服务）</p>
+      </div>
+      <p style="text-align:center; margin-top:20px; font-size:1.1rem;">💡 一日游导游费<strong style="color:#c0392b;">¥398起/组</strong>（1-6人），具体根据路线和人数定制</p>
+    </section>
+
+    <section class="cta-section" id="contact">
+      <h2>📞 定制您的一日游</h2>
+      <p>微信：<strong style="color:#4ade80;">18012361217</strong></p>
+      <div class="cta-phone">400-858-0518</div>
+      <p>📧 邮箱：<strong style="color:#4ade80;">932168783@qq.com</strong></p>
+      <p style="color:#94a3b8; margin-top:8px;">提前预约，为您量身定制专属行程</p>
+      <a href="tel:4008580518" class="btn-cta">📞 直接拨打</a>
+      <a href="mailto:932168783@qq.com" class="btn-cta-white">📧 发送邮件</a>
+    </section>
+  </main>
+  <Footer />
+</body>
+</html>
