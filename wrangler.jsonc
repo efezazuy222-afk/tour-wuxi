@@ -1,0 +1,13 @@
+{
+	"compatibility_date": "2026-05-03",
+	"compatibility_flags": ["global_fetch_strictly_public"],
+	"name": "c-users-p-c-desktop-tour-wuxi",
+	"main": "@astrojs/cloudflare/entrypoints/server",
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS"
+	},
+	"observability": {
+		"enabled": true
+	}
+}
