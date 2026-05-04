@@ -17,14 +17,14 @@ const posts = allPosts.sort((a, b) => {
 });
 
 // Pagination settings
-const maxPerPage = 6;
+const maxPerPage = 50;
 const currentPage = 1;
 
 // Calculate total pages
-const totalPages = Math.ceil(posts.length / maxPerPage);
+const totalPages = 1;
 
 // Get visible posts for current page
-const visiblePosts = posts.slice(0, maxPerPage);
+const visiblePosts = posts;
 ---
 
 <MainLayout title="无锡旅游攻略 | 景点指南·美食推荐 | 澜青旅行社">
@@ -38,12 +38,6 @@ description = "澜青旅行顾问为你整理无锡景点指南、美食推荐�
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {visiblePosts.map((post) => <BlogCard post={post} />)}
         </div>
-
-        {totalPages > 1 && (
-          <div class="flex justify-center mt-16">
-            <Pagination currentPage={currentPage} totalPages={totalPages} basePath="blogs" />
-          </div>
-        )}
       </div>
     </div>
   </section>
