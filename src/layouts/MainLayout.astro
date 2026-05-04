@@ -1,0 +1,121 @@
+---
+import Header from '@src/components/Header.astro';
+import Footer from '@src/components/Footer.astro';
+import { Font } from "astro:assets";
+
+import 'glightbox/dist/css/glightbox.min.css';
+import '@src/styles/style.css';
+import BackToTop from '@src/components/BackToTop.astro';
+
+const navItems = [
+  { label: "首页", href: "/" },
+  { label: "关于澜青", href: "/about" },
+  { label: "无锡路线", href: "/tours" },
+  { label: "常见问题", href: "/faqs" },
+  { label: "游客评价", href: "/reviews" },
+  { label: "旅游攻略", href: "/blogs" },
+];
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title = "Ocean - Travel Website Template",
+  description = "Explore the world with Ocean, a modern and stylish travel website template designed for travel agencies, tour operators, and travel enthusiasts.",
+} = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+
+    <!-- Primary Meta -->
+    <meta name="description" content={description} />
+    <meta name="author" content="Author Name" />
+    <meta name="robots" content="index, follow" />
+
+    <link rel="canonical" href={Astro.url?.href || "https://ocean.madethemes.com"} />
+    <link rel="icon" type="image/x-icon" href="/img/favicon.png" />
+    <Font cssVariable="--font-inter" preload />
+  </head>
+
+  <body class="font-sans bg-blue-950">
+    <Header
+      logo={{
+    src: "/img/logo.png",
+    alt: "澜青旅行社",
+    href: "/"
+}}
+
+navItems={[
+    { label: "首页", href: "/" },
+    { label: "关于澜青", href: "/about" },
+    { label: "无锡路线", href: "/tours" },
+    { label: "常见问题", href: "/faqs" },
+    { label: "游客评价", href: "/reviews" },
+    { label: "旅游攻略", href: "/blogs" },
+]}
+
+cta={{
+    label: "立即咨询",
+    href: "/booking"
+}}
+    />
+    <main>
+      <slot />
+    </main>
+    <Footer
+  backgroundImage="/img/tours/tour-5.jpg"
+  about={{
+    title: "关于澜青旅行社",
+    description:
+      "澜青旅行社扎根无锡太湖之滨，专注精品小团定制游。从鼋头渚樱花到灵山梵音，从惠山古镇到南长街夜色，带您体验真正的江南水乡之美。",
+  }}
+  navigation={[
+    { label: "无锡精品路线", href: "/tours" },
+    { label: "隐私政策", href: "/privacy" },
+    { label: "服务条款", href: "/terms" },
+    { label: "使用文档", href: "/documentation" },
+  ]}
+  destinations={[
+    "太湖鼋头渚",
+    "灵山大佛",
+    "惠山古镇",
+    "南长街",
+    "蠡园",
+  ]}
+  copyright="© 2026 澜青旅行社 版权所有"
+/>
+    <BackToTop />
+
+    <!-- Alpine.js -->
+    <script>
+      import Alpine from 'alpinejs';
+      declare global {
+        interface Window {
+          Alpine: typeof Alpine;
+        }
+      }
+      window.Alpine = Alpine;
+      Alpine.start();
+    </script>
+
+    <!-- GLightbox -->
+    <script>
+      import GLightbox from 'glightbox';
+
+      const hasLightbox = document.querySelector('.glightbox');
+      if (hasLightbox) {
+        GLightbox({
+          selector: '.glightbox',
+          touchNavigation: true,
+          loop: true,
+        });
+      }
+    </script>
+  </body>
+</html>

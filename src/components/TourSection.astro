@@ -1,0 +1,66 @@
+---
+import TourCard from "@src/components/TourCard.astro";
+import { getCollection } from "astro:content";
+
+/* =========================
+   Types
+========================= */
+export interface TourSectionProps {
+  id?: string;
+  title: string;
+  description?: string;
+  maxTours?: number;
+}
+
+/* =========================
+   Props & Defaults
+========================= */
+const {
+  id = "packages",
+  title = "无锡精品路线推荐",
+description = "澜青为你精选太湖鼋头渚、灵山大佛、惠山古镇等无锡必游路线，每一条都经过实地踩线，品质保证。",
+  maxTours = 8,
+} = Astro.props as TourSectionProps;
+
+/* =========================
+   Fetch & Prepare Tours
+========================= */
+const allTours = await getCollection("tours");
+
+// Optional: sort tours by price (lowest first)
+// kamu bisa ganti logic ini kapan saja
+const tours = allTours.sort((a, b) => {
+  const priceA = Math.min(...a.data.pricing.map((p) => p.price));
+  const priceB = Math.min(...b.data.pricing.map((p) => p.price));
+  return priceA - priceB;
+});
+
+// Limit tours
+const visibleTours = tours.slice(0, maxTours);
+---
+
+<!-- Tour Section -->
+<section id={id} class="relative py-16 md:py-20 overflow-hidden">
+  <div class="max-w-6xl mx-auto px-4">
+
+    <!-- Heading -->
+    <div class="mb-12 text-center">
+      <h2 class="text-3xl md:text-4xl font-semibold text-white">
+        {title}
+      </h2>
+
+      {description && (
+        <p class="mt-3 text-white/70 max-w-2xl mx-auto">
+          {description}
+        </p>
+      )}
+    </div>
+
+    <!-- Tour Grid -->
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {visibleTours.map((tour) => (
+        <TourCard tour={tour} />
+      ))}
+    </div>
+  </div>
+</section>

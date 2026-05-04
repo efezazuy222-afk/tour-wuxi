@@ -1,0 +1,64 @@
+---
+import BlogCard from "@src/components/BlogCard.astro";
+import { getCollection } from "astro:content";
+
+/* =========================
+   Types
+========================= */
+export interface BlogSectionProps {
+  id?: string;
+  title: string;
+  description?: string;
+  maxPosts?: number;
+}
+
+/* =========================
+   Props & Defaults
+========================= */
+const {
+  id = "blogs",
+  title = "无锡旅游攻略",
+description = "澜青旅行顾问为你整理无锡最实用的景点指南、美食推荐与出行技巧，助你轻松玩转江南水乡。",
+  maxPosts = 3,
+} = Astro.props as BlogSectionProps;
+
+/* =========================
+   Fetch & Prepare Posts
+========================= */
+const allPosts = await getCollection("blog");
+
+// Sort posts by date (newest first)
+const posts = allPosts.sort((a, b) => {
+  const dateA =
+    typeof a.data.date === "string" ? new Date(a.data.date) : a.data.date;
+  const dateB =
+    typeof b.data.date === "string" ? new Date(b.data.date) : b.data.date;
+  return dateB.valueOf() - dateA.valueOf();
+});
+
+// Limit posts
+const visiblePosts = posts.slice(0, maxPosts);
+---
+<!-- Blog Section -->
+<section id={id} class="relative py-16 md:py-20 overflow-hidden">
+  <div class="max-w-6xl mx-auto px-4">
+    <!-- Heading -->
+    <div class="mb-12 text-center">
+      <h2 class="text-3xl md:text-4xl font-semibold text-white">
+        {title}
+      </h2>
+      {description && (
+        <p class="mt-3 text-white/70 max-w-2xl mx-auto">
+          {description}
+        </p>
+      )}
+    </div>
+
+    <!-- Blog Grid -->
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {visiblePosts.map((post) => (
+        <BlogCard post={post} />
+      ))}
+    </div>
+  </div>
+</section>

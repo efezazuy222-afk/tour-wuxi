@@ -1,0 +1,30 @@
+---
+import HeadingSection from '@src/components/HeadingSection.astro';
+import MainLayout from '@src/layouts/MainLayout.astro';
+
+import { getCollection, render } from "astro:content";
+
+const entries = await getCollection("pages");
+const entry = entries.find(e => e.id.includes("terms"));
+let Content;
+if (entry) {
+  ({ Content } = await render(entry));
+}
+---
+
+{entry ? (
+  <MainLayout title={entry.data.title}>
+    <HeadingSection
+        title="Terms of Service"
+    />
+    <div class="relative py-6">
+      <div class="max-w-6xl mx-auto px-4">
+        <article class="post-content rounded-2xl bg-slate-900 border-slate-200 p-6 md:p-8 shadow-md shadow-blue-950">
+          {Content && <Content />}
+        </article>
+      </div>
+    </div>
+  </MainLayout>
+) : (
+  <div>Page not found.</div>
+)}

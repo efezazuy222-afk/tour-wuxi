@@ -1,0 +1,218 @@
+---
+export interface FishWidgetProps {
+  id?: string;
+  fishCount?: number;
+  fishAssets?: string[];
+  observerThreshold?: number;
+  className?: string;
+}
+
+const {
+  id = "fish-layer",
+  fishCount = 10,
+  fishAssets = [
+    "/img/fish1.png",
+    "/img/fish2.png",
+    "/img/fish3.png",
+    "/img/fish4.png",
+    "/img/fish5.png",
+    "/img/fish6.png",
+  ],
+  observerThreshold = 0.25,
+  className = "",
+} = Astro.props as FishWidgetProps;
+---
+
+<!-- Fish Layer -->
+<div
+  id={id}
+  class={`absolute inset-0 z-10 pointer-events-none ${className}`}
+></div>
+
+<script define:vars={{ id, fishCount, fishAssets, observerThreshold }}>
+  (() => {
+    const layer = document.getElementById(id);
+    if (!layer) return;
+
+    /**
+     * Underwater Fish Animator
+     * Runs ONLY when layer is visible
+     */
+
+    const FISH_COUNT = fishCount;
+
+    /* =======================
+       Utils
+    ======================= */
+    const rand = (min, max) => Math.random() * (max - min) + min;
+    const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+    const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+
+    function sizeToZIndex(w, min = 10, max = 100) {
+      const t = clamp((w - 36) / (110 - 36), 0, 1);
+      return Math.round(min + t * (max - min));
+    }
+
+    /* =======================
+       Fish setup
+    ======================= */
+    const fishes = [];
+
+    function createFish() {
+      const img = document.createElement("img");
+      img.src = pick(fishAssets);
+      img.alt = "fish";
+      img.draggable = false;
+
+      img.className =
+        "absolute select-none drop-shadow-[0_10px_18px_rgba(0,0,0,0.35)] opacity-90";
+
+      const w = rand(36, 110);
+      img.style.width = `${w}px`;
+      img.style.zIndex = sizeToZIndex(w);
+
+      const rect = layer.getBoundingClientRect();
+      const h = rect.height || window.innerHeight * 0.75;
+      const y = rand(0.12, 0.86) * h;
+
+      const fromLeft = Math.random() < 0.5;
+      const x = fromLeft ? rand(-220, 220) : rand(rect.width - 220, rect.width + 220);
+
+      const dir = fromLeft ? 1 : -1;
+      const depthFactor = clamp(110 / w, 0.8, 2.2);
+
+      const fish = {
+        el: img,
+        x,
+        baseY: y,
+        dir,
+        speed: rand(25, 110) / depthFactor,
+        driftAmp: rand(2, 16),
+        driftSpeed: rand(0.6, 1.6),
+        phase: rand(0, Math.PI * 2),
+        flip: dir === 1 ? 1 : -1,
+      };
+
+      img.style.transform = `translate3d(${x}px, ${y}px, 0) scaleX(${fish.flip})`;
+      img.style.willChange = "transform";
+
+      layer.appendChild(img);
+      fishes.push(fish);
+    }
+
+    function resetFish(fish, side) {
+      const rect = layer.getBoundingClientRect();
+      const h = rect.height || window.innerHeight * 0.75;
+
+      const w = rand(36, 110);
+      fish.el.style.width = `${w}px`;
+      fish.el.style.zIndex = sizeToZIndex(w);
+
+      const depthFactor = clamp(110 / w, 0.8, 2.2);
+      fish.speed = rand(25, 110) / depthFactor;
+
+      fish.baseY = rand(0.12, 0.86) * h;
+      fish.phase = rand(0, Math.PI * 2);
+      fish.driftAmp = rand(2, 16);
+      fish.driftSpeed = rand(0.6, 1.6);
+
+      if (side === "left") {
+        fish.x = -220;
+        fish.dir = 1;
+        fish.flip = 1;
+      } else {
+        fish.x = rect.width + 220;
+        fish.dir = -1;
+        fish.flip = -1;
+      }
+
+      if (Math.random() < 0.6) fish.el.src = pick(fishAssets);
+    }
+
+    function initFish() {
+      layer.innerHTML = "";
+      fishes.length = 0;
+      for (let i = 0; i < FISH_COUNT; i++) createFish();
+    }
+
+    /* =======================
+       Animation control
+    ======================= */
+    let rafId = null;
+    let lastTime = 0;
+
+    function animate(now) {
+      if (!lastTime) lastTime = now;
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+
+      const rect = layer.getBoundingClientRect();
+      const width = rect.width || window.innerWidth;
+
+      for (const fish of fishes) {
+        fish.x += fish.dir * fish.speed * dt;
+
+        const y =
+          fish.baseY +
+          Math.sin(now / 1000 * fish.driftSpeed + fish.phase) *
+            fish.driftAmp;
+
+        if (fish.x < -240) {
+          Math.random() < 0.45
+            ? ((fish.dir = 1), (fish.flip = 1))
+            : resetFish(fish, "right");
+        } else if (fish.x > width + 240) {
+          Math.random() < 0.45
+            ? ((fish.dir = -1), (fish.flip = -1))
+            : resetFish(fish, "left");
+        }
+
+        fish.el.style.transform = `translate3d(${fish.x}px, ${y}px, 0) scaleX(${fish.flip})`;
+      }
+
+      rafId = requestAnimationFrame(animate);
+    }
+
+    function startAnimation() {
+      if (rafId) return;
+      lastTime = 0;
+      rafId = requestAnimationFrame(animate);
+    }
+
+    function stopAnimation() {
+      if (!rafId) return;
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+
+    /* =======================
+       Init + Observer
+    ======================= */
+    initFish();
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          startAnimation();
+        } else {
+          stopAnimation();
+        }
+      },
+      { threshold: observerThreshold }
+    );
+
+    observer.observe(layer);
+
+    /* =======================
+       Resize
+    ======================= */
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        initFish();
+        if (rafId) startAnimation();
+      }, 150);
+    });
+  })();
+</script>

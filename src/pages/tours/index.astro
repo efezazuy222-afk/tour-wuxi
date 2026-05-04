@@ -1,0 +1,43 @@
+---
+import MainLayout from "@src/layouts/MainLayout.astro";
+import TourCard from "@src/components/TourCard.astro";
+import Pagination from "@src/components/Pagination.astro";
+
+import { getCollection } from "astro:content";
+import HeadingSection from "@src/components/HeadingSection.astro";
+
+const allTours = await getCollection("tours");
+
+const maxPerPage = 8;
+const currentPage = 1;
+const totalPages = Math.ceil(allTours.length / maxPerPage);
+const visibleTours = allTours.slice(0, maxPerPage);
+---
+
+<MainLayout title="无锡精品路线 | 太湖鼋头渚·灵山大佛·惠山古镇 | 澜青旅行社">
+    <HeadingSection
+      title="无锡精品路线"
+      description="澜青为你精选太湖鼋头渚、灵山大佛、惠山古镇等无锡必游路线，从一日游到深度定制，总有一款适合你。"
+    />
+  <section class="relative py-16 md:py-20 overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4">
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {visibleTours.map((tour) => (
+          <TourCard tour={tour} />
+        ))}
+      </div>
+
+      {totalPages > 1 && (
+        <div class="mt-16 flex justify-center">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            basePath="/tours"
+          />
+        </div>
+      )}
+
+    </div>
+  </section>
+</MainLayout>

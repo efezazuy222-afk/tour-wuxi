@@ -1,0 +1,625 @@
+@import "tailwindcss";
+@theme {
+    --font-sans: var(--font-inter), sans-serif;
+}
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-slate-200, currentColor);
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-slate-200);
+  }
+  button, [role="button"] {
+    cursor: pointer;
+  }
+}
+@custom-variant dark (&:where(.dark, .dark *));
+body {
+    font-family: var(--font-inter), sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-inter), sans-serif;
+}
+.thumbnail-button {
+  position: relative;
+  overflow: hidden;
+}
+.thumbnail-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  pointer-events: none;
+}
+.thumbnail-button:hover::after {
+  background: rgba(0, 0, 0, 0.15);
+}
+.cursor-zoom-in {
+  cursor: zoom-in;
+}
+.glightbox-clean .gslide-description { 
+    background: rgba(255, 255, 255, 0.96) !important; 
+    color: var(--color-blue-800);
+    padding: 1rem !important; 
+}
+.glightbox-clean .gslide-title { 
+    font-size: 1.25em !important;
+    color: var(--color-green-500) !important; 
+    font-family: var(--font-inter), serif !important;
+    margin-bottom: .5em !important;
+}
+.text-shadow {
+  text-shadow: 0 2px 10px var(--color-slate-700);
+}
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 50px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+.fadeInUp {
+  animation-name: fadeInUp;
+}
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-50px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+.fadeInLeft {
+  animation-name: fadeInLeft;
+}
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translate3d(50px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+.fadeInRight {
+  animation-name: fadeInRight;
+}
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -50px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+.fadeInDown {
+  animation-name: fadeInDown;
+}
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+}
+.zoomIn {
+  animation-name: zoomIn;
+}
+
+.delay100 {
+  animation-delay: 100ms;
+}
+.delay200 {
+  animation-delay: 200ms;
+}
+.delay300 {
+  animation-delay: 300ms;
+}
+.delay400 {
+  animation-delay: 400ms;
+}
+.delay500 {
+  animation-delay: 500ms;
+}
+.delay600 {
+  animation-delay: 600ms;
+}
+.delay700 {
+  animation-delay: 700ms;
+}
+.delay800 {
+  animation-delay: 800ms;
+}
+.delay900 {
+  animation-delay: 900ms;
+}
+.delay1000 {
+  animation-delay: 1000ms;
+}
+.delay1100 {
+  animation-delay: 1100ms;
+}
+.delay1200 {
+  animation-delay: 1200ms;
+}
+
+/*Marque*/
+.marquee {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 120px;
+}
+
+.marquee::before,
+.marquee::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 80px; 
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+}
+.marquee::before {
+  left: 0;
+  background: linear-gradient(to right, var(--color-slate-100), rgba(255, 255, 255, 0));
+}
+.marquee::after {
+  right: 0;
+  background: linear-gradient(to left, var(--color-slate-100), rgba(255, 255, 255, 0));
+}
+.track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+  will-change: transform;
+  pointer-events: none;
+}
+.track img {
+  display: inline-block;
+  height: 80px;
+  margin: 0 20px;
+  user-select: none;
+}
+
+.active-thumbnail {
+    opacity: 1 !important;
+    outline: 3px solid var(--color-green-500);
+    box-shadow: 0 0 0 3px var(--color-green-500);
+}
+.thumbnail {
+    opacity: 0.7;
+    transition: all 0.3s;
+}
+.thumbnail:hover {
+    opacity: 1;
+}
+
+/*------------------------------------
+  Post page
+------------------------------------*/
+.post-content {
+  @apply leading-relaxed font-sans text-slate-300;
+}
+
+.post-content > *:first-child,
+.post-content h1:first-child,
+.post-content h2:first-child,
+.post-content h3:first-child,
+.post-content h4:first-child,
+.post-content h5:first-child,
+.post-content h6:first-child,
+.post-content ul:first-child,
+.post-content ol:first-child,
+.post-content img:first-child,
+.post-content figure:first-child,
+.post-content figcaption:first-child,
+.post-content blockquote:first-child,
+.post-content cite:first-child,
+.post-content pre:first-child,
+.post-content table:first-child,
+.post-content hr:first-child,
+.post-content .wp-caption:first-child,
+.post-content .aligncenter:first-child,
+.post-content .alignnone:first-child,
+.post-content .wp-image-center:first-child,
+.post-content img.aligncenter:first-child,
+.post-content img.alignnone:first-child,
+.post-content img.alignfull:first-child,
+.post-content img.alignwide:first-child,
+.post-content .gallery:first-child,
+.post-content .wp-block-quote:first-child,
+.post-content .wp-block-pullquote:first-child,
+.post-content .wp-block-button:first-child {
+  @apply !mt-0;
+}
+
+.post-content > *:last-child {
+  @apply !mb-0;
+}
+/* Headings */
+.post-content h1 {
+  @apply text-4xl md:text-5xl font-medium text-white mt-8 mb-4 leading-tight;
+}
+
+.post-content h2 {
+  @apply text-2xl md:text-3xl font-medium text-white mt-6 mb-4 leading-tight;
+}
+
+.post-content h3 {
+  @apply text-xl md:text-2xl font-medium text-white mt-6 mb-3 leading-tight;
+}
+
+.post-content h4 {
+  @apply text-lg md:text-xl font-medium text-white mt-5 mb-3 leading-tight;
+}
+
+.post-content h5 {
+  @apply text-lg md:text-xl font-medium text-white mt-4 mb-2 leading-tight;
+}
+
+.post-content h6 {
+  @apply text-base md:text-lg font-medium text-white mt-4 mb-2 leading-tight;
+}
+
+/* Paragraphs */
+.post-content p {
+  @apply mb-4 text-base md:text-lg leading-relaxed;
+}
+
+.post-content p:last-child {
+  @apply mb-0;
+}
+
+/* Links */
+.post-content a {
+  @apply text-blue-300 hover:underline transition-colors duration-200;
+}
+
+.post-content a:visited {
+  @apply text-blue-200;
+}
+
+/* Lists */
+.post-content ul {
+  @apply list-disc list-inside mb-4 space-y-1;
+}
+
+.post-content ol {
+  @apply list-decimal list-inside mb-4 space-y-1;
+}
+
+.post-content li {
+  @apply text-base leading-relaxed;
+}
+
+.post-content ul ul,
+.post-content ol ol,
+.post-content ul ol,
+.post-content ol ul {
+  @apply ml-6 mt-2 mb-0;
+}
+
+/* Images */
+.post-content img {
+  @apply max-w-full h-auto rounded-lg shadow-md my-4;
+}
+
+.post-content figure {
+  @apply my-6;
+}
+
+.post-content figcaption {
+  @apply text-sm mt-2 text-center italic;
+}
+
+/* Blockquotes */
+.post-content blockquote {
+  @apply border-l-4 border-blue-500 pl-4 my-6 italic py-2 rounded-r-lg;
+}
+
+.post-content blockquote p {
+  @apply mb-0;
+}
+
+.post-content blockquote cite {
+  @apply block text-sm mt-2 not-italic;
+}
+
+/* Code */
+.post-content code {
+  @apply text-blue-400 px-1 py-0.5 rounded text-sm;
+}
+
+.post-content pre {
+  @apply bg-blue-950 text-slate-100 p-4 rounded-lg overflow-x-auto my-4;
+}
+
+.post-content pre code {
+  @apply bg-transparent text-slate-100 px-0 py-0;
+}
+
+/* Tables */
+.post-content table {
+  @apply w-full border-collapse border border-slate-300 my-6;
+}
+
+.post-content table thead tr th {
+  @apply text-white;
+}
+
+.wp-block-table thead {
+    border-bottom: 2px solid #ddd !important;
+}
+
+.post-content th {
+  @apply bg-blue-800 border border-slate-300 px-6 py-3 text-left font-semibold;
+}
+
+.post-content td {
+  @apply border border-slate-300 px-6 py-3;
+}
+
+.post-content tr:nth-child(even) {
+  @apply bg-slate-100;
+}
+
+/* Horizontal Rule */
+.post-content hr {
+  @apply border-0 border-t border-slate-300 my-8;
+}
+
+/* Text Formatting */
+.post-content strong,
+.post-content b {
+  @apply font-semibold;
+}
+
+.post-content em,
+.post-content i {
+  @apply italic;
+}
+
+.post-content u {
+  @apply underline;
+}
+
+.post-content s,
+.post-content del {
+  @apply line-through;
+}
+
+.post-content mark {
+  @apply bg-yellow-200 px-1;
+}
+
+.post-content small {
+  @apply text-sm;
+}
+
+.post-content sup {
+  @apply text-xs align-super;
+}
+
+.post-content sub {
+  @apply text-xs align-sub;
+}
+
+/* WordPress Specific Classes */
+.post-content .wp-caption {
+  @apply max-w-full bg-blue-800 border border-blue-800 rounded-lg p-2 my-4;
+}
+
+.post-content .wp-caption-text {
+  @apply text-sm text-slate-700 text-center mt-2;
+}
+
+.post-content .alignleft {
+  @apply float-left mr-4 mb-2;
+}
+
+.post-content .alignright {
+  @apply float-right ml-4 mb-2;
+}
+
+.post-content .aligncenter {
+  @apply mx-auto my-4;
+}
+
+.post-content .alignnone {
+  @apply my-4;
+}
+
+.post-content .size-full,
+.post-content .size-large,
+.post-content .size-medium {
+  @apply max-w-full h-auto;
+}
+
+.post-content .wp-image-left,
+.post-content img.alignleft, .post-content .alignleft img {
+  @apply float-left mr-4 mb-4 max-w-xs;
+}
+
+.post-content .wp-image-right,
+.post-content img.alignright, .post-content .alignright img {
+  @apply float-right ml-4 mb-4 max-w-xs;
+}
+
+.post-content .wp-image-center,
+.post-content img.aligncenter, .post-content .aligncenter img {
+  @apply block mx-auto my-6 clear-both;
+}
+
+.post-content img.alignnone, .post-content .alignnone img {
+  @apply my-4 clear-both;
+}
+
+.post-content img.alignfull {
+  @apply w-screen max-w-none mx-auto my-8;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.post-content img.alignwide {
+  @apply w-full max-w-4xl mx-auto my-8 clear-both;
+}
+
+/* Image Size Classes */
+.post-content img.size-thumbnail {
+  @apply max-w-32 h-auto;
+}
+
+.post-content img.size-medium {
+  @apply max-w-xs h-auto;
+}
+
+.post-content img.size-large {
+  @apply max-w-2xl h-auto;
+}
+
+/* WordPress Gallery Enhanced */
+.post-content .gallery {
+  @apply grid gap-2 my-6 clear-both;
+}
+
+.post-content .gallery-columns-1 {
+  @apply grid-cols-1 gap-4;
+}
+
+.post-content .gallery-columns-2 {
+  @apply grid-cols-1 sm:grid-cols-2 gap-3;
+}
+
+.post-content .gallery-columns-3 {
+  @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2;
+}
+
+.post-content .gallery-columns-4 {
+  @apply grid-cols-2 md:grid-cols-4 gap-2;
+}
+
+.post-content .gallery-columns-5 {
+  @apply grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-1;
+}
+
+.post-content .gallery-columns-6 {
+  @apply grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-1;
+}
+
+.post-content .gallery-item {
+  @apply text-center overflow-hidden rounded-lg;
+}
+
+.post-content .gallery-item img {
+  @apply w-full h-auto object-cover transition-transform duration-300 hover:scale-105 my-0;
+}
+
+.post-content .gallery-caption {
+  @apply text-xs text-slate-600 mt-2 px-1 leading-tight;
+}
+
+/* Gallery Masonry Style */
+.post-content .gallery.is-style-masonry {
+  @apply columns-2 md:columns-3 lg:columns-4 gap-4;
+}
+
+.post-content .gallery.is-style-masonry .gallery-item {
+  @apply mb-4 break-inside-avoid;
+}
+
+/* Image with Caption Container */
+.post-content .wp-caption {
+  @apply inline-block max-w-full bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm my-4;
+}
+
+.post-content .wp-caption-text {
+  @apply text-sm text-slate-600 p-3 bg-slate-50 text-center border-t border-slate-100;
+}
+
+/* WordPress Blocks */
+.post-content .wp-block-quote {
+  @apply border-l-4 border-slate-600 pl-4 my-6 italic text-slate-700;
+}
+
+.post-content .wp-block-pullquote {
+  @apply border-t-4 border-b-4 border-slate-600 py-4 my-8 text-xl text-center;
+}
+
+.post-content .wp-block-button {
+  @apply my-4;
+}
+
+.post-content .wp-block-button .wp-block-button__link {
+  @apply bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg no-underline inline-block transition-colors duration-200;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .post-content {
+    @apply text-sm;
+  }
+  
+  .post-content h1 {
+    @apply text-4xl;
+  }
+  
+  .post-content h2 {
+    @apply text-3xl;
+  }
+  
+  .post-content h3 {
+    @apply text-2xl;
+  }
+
+  .post-content h4 {
+    @apply text-xl;
+  }
+
+  .post-content h5 {
+    @apply text-lg;
+  }
+
+  .post-content h6 {
+    @apply text-base;
+  }
+  
+  .post-content .alignleft,
+  .post-content .alignright {
+    @apply float-none mx-auto block;
+  }
+  
+  .post-content table {
+    @apply text-sm;
+  }
+  
+  .post-content th,
+  .post-content td {
+    @apply px-2 py-1;
+  }
+}

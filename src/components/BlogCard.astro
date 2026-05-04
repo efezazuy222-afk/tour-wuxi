@@ -1,0 +1,76 @@
+---
+import { Icon } from "astro-icon/components";
+import type { CollectionEntry } from "astro:content";
+
+export interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { data } = post;
+const slug = post.id.replace(/\.mdx$/, "");
+
+// Normalize date
+const postDate =
+  typeof data.date === "string" ? new Date(data.date) : data.date;
+
+// Format date
+const formattedDate = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+}).format(postDate);
+
+// Fallbacks
+const cover = data.cover ?? "/img/blog-placeholder.jpg";
+const description = data.description ?? "";
+---
+
+<article class="group rounded-2xl border border-white/10 bg-white/5 backdrop-blur overflow-hidden">
+  <!-- Image -->
+  <div class="relative aspect-video overflow-hidden">
+    <a href={`/blogs/${slug}`}>
+      <img
+        src={cover}
+        alt={data.title}
+        loading="lazy"
+        class="w-full h-full object-cover transition duration-500 group-hover:scale-110"
+      />
+
+      {data.category && (
+        <span class="absolute top-3 left-3 rounded-full bg-black/60 px-3 py-1 text-xs text-white backdrop-blur">
+          {data.category}
+        </span>
+      )}
+    </a>
+  </div>
+
+  <!-- Content -->
+  <div class="p-6">
+    <h3 class="text-lg font-semibold text-white hover:text-blue-400 transition">
+      <a href={`/blogs/${slug}`}>
+        {data.title}
+      </a>
+    </h3>
+
+    {description && (
+      <p class="mt-2 text-sm text-white/70">
+        {description}
+      </p>
+    )}
+
+    <div class="mt-4 flex items-center justify-between text-sm text-white/50">
+      <time datetime={postDate.toISOString()}>
+        {formattedDate}
+      </time>
+
+      <a
+        href={`/blogs/${slug}`}
+        class="inline-flex items-center gap-2 text-white font-medium hover:underline"
+      >
+        Read More
+        <Icon name="bi:arrow-right" class="w-4 h-4" />
+      </a>
+    </div>
+  </div>
+</article>

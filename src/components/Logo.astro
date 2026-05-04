@@ -1,0 +1,23 @@
+---
+export interface LogoProps {
+  href?: string;
+  src: string;
+  alt?: string;
+  className?: string;
+}
+
+const {
+  href = "/",
+  src,
+  alt = "Logo",
+  className = "h-8 w-auto object-contain",
+} = Astro.props;
+---
+
+<a href={href} class="inline-flex items-center gap-2">
+  <img
+    src={src}
+    alt={alt}
+    class={className}
+  />
+</a>

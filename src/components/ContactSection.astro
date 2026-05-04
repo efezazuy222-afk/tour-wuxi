@@ -1,0 +1,139 @@
+---
+import { Icon } from "astro-icon/components";
+
+/* =========================
+   Types
+========================= */
+export interface ContactSectionProps {
+  id?: string;
+  title?: string;
+  description?: string;
+
+  address?: string;
+  email?: string;
+  phone?: string;
+}
+
+/* =========================
+   Props & Defaults
+========================= */
+const {
+  id = "contact",
+  title = "Get in Touch",
+  description = "Have questions or need assistance? Our team is ready to help you plan your perfect journey.",
+
+  address = "Tan Wei Ling, Blk 123 Ang Mo Kio Ave 4, #10-10, Singapore",
+  email = "hello@oceantravel.com",
+  phone = "+123 3456 7890",
+} = Astro.props as ContactSectionProps;
+---
+
+<!-- Contact Section -->
+<section id={id} class="relative py-16 md:py-20 overflow-hidden">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+
+      <!-- =========================
+        LEFT: CONTACT INFO
+      ========================= -->
+      <div>
+        <h2 class="text-3xl md:text-4xl font-semibold text-white">
+          {title}
+        </h2>
+
+        {description && (
+          <p class="mt-4 text-white/70 leading-relaxed">
+            {description}
+          </p>
+        )}
+
+        <div class="mt-8 space-y-5 text-white/80">
+
+          <div class="flex items-start gap-4">
+            <div class="size-10 flex items-center justify-center rounded-xl bg-white/10">
+              <Icon name="bi:geo-alt" />
+            </div>
+            <div>
+              <div class="font-semibold text-white">Address</div>
+              <div class="text-sm text-white/70">{address}</div>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div class="size-10 flex items-center justify-center rounded-xl bg-white/10">
+              <Icon name="bi:envelope" />
+            </div>
+            <div>
+              <div class="font-semibold text-white">Email</div>
+              <a href={`mailto:${email}`} class="text-sm text-white/70 hover:text-white">
+                {email}
+              </a>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div class="size-10 flex items-center justify-center rounded-xl bg-white/10">
+              <Icon name="bi:telephone" />
+            </div>
+            <div>
+              <div class="font-semibold text-white">Phone</div>
+              <a href={`tel:${phone}`} class="text-sm text-white/70 hover:text-white">
+                {phone}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =========================
+        RIGHT: CONTACT FORM
+      ========================= -->
+      <form
+        method="post"
+        class="rounded-3xl bg-white/5 border border-white/10 backdrop-blur p-8 space-y-6"
+      >
+        <h3 class="text-2xl font-semibold text-white">
+          Send Us a Message
+        </h3>
+
+        <div>
+          <label class="block text-sm text-white/70 mb-2">Full Name</label>
+          <input
+            type="text"
+            required
+            placeholder="Your name"
+            class="w-full rounded-xl bg-black/30 border border-white/20 px-4 py-3 text-white focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm text-white/70 mb-2">Email Address</label>
+          <input
+            type="email"
+            required
+            placeholder="email@example.com"
+            class="w-full rounded-xl bg-black/30 border border-white/20 px-4 py-3 text-white focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm text-white/70 mb-2">Message</label>
+          <textarea
+            rows="4"
+            required
+            placeholder="Write your message..."
+            class="w-full rounded-xl bg-black/30 border border-white/20 px-4 py-3 text-white focus:outline-none"
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full rounded-xl bg-white px-6 py-3 font-semibold text-black hover:bg-white/90 transition"
+        >
+          Send Message
+        </button>
+      </form>
+
+    </div>
+  </div>
+</section>

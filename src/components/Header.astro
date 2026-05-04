@@ -1,0 +1,130 @@
+---
+import { Icon } from "astro-icon/components";
+import Logo from "./Logo.astro";
+import Button from "./Button.astro";
+
+export interface NavItem {
+  label: string;
+  href: string;
+}
+
+export interface HeaderProps {
+  logo: {
+    src: string;
+    alt?: string;
+    href?: string;
+  };
+  navItems: NavItem[];
+  cta?: {
+    label: string;
+    href: string;
+  };
+}
+
+const props = Astro.props as HeaderProps;
+const { logo, navItems, cta } = props;
+
+// 👉 active path
+const pathname = Astro.url.pathname;
+---
+
+<header x-data="{ open: false }" class="fixed top-4 left-0 right-0 z-50">
+  <div class="mx-auto max-w-6xl px-4">
+    <div
+      class="flex h-16 items-center justify-between rounded-2xl border border-white/10 bg-black/30 backdrop-blur-md"
+    >
+      <!-- Logo -->
+      <div class="px-4">
+        <Logo
+          src={logo.src}
+          alt={logo.alt}
+          href={logo.href}
+        />
+      </div>
+
+      <!-- Desktop Menu -->
+      <nav class="hidden md:flex items-center gap-6 px-4">
+        {navItems.map((item: NavItem) => {
+          const isActive =
+            item.href === "/"
+              ? pathname === "/"
+              : pathname.startsWith(item.href);
+
+          return (
+            <a
+              href={item.href}
+              class={`text-sm font-medium transition
+                ${isActive ? "active text-white" : "text-white/80 hover:text-white"}
+              `}
+            >
+              {item.label}
+            </a>
+          );
+        })}
+
+        {cta && (
+          <Button
+            href={cta.href}
+            label={cta.label}
+            variant="white"
+            className="ml-2"
+          />
+        )}
+      </nav>
+
+      <!-- Mobile Toggle -->
+      <button
+        @click="open = !open"
+        aria-label="mobile menu"
+        class="mr-4 flex md:hidden items-center justify-center rounded-lg border border-white/20 size-10 text-white"
+      >
+        <Icon x-show="!open" name="bi:list" class="text-xl" />
+        <Icon
+          x-show="open"
+          name="bi:x-lg"
+          class="text-xl"
+          style="display:none;"
+        />
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div
+    x-show="open"
+    style="display:none;"
+    @click.outside="open = false"
+    class="md:hidden px-4 pt-2"
+  >
+    <div
+      class="space-y-3 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md p-4"
+    >
+      {navItems.map((item: NavItem) => {
+        const isActive =
+          item.href === "/"
+            ? pathname === "/"
+            : pathname.startsWith(item.href);
+
+        return (
+          <a
+            href={item.href}
+            class={`block transition
+              ${isActive ? "active text-white" : "text-white/80 hover:text-white"}
+            `}
+          >
+            {item.label}
+          </a>
+        );
+      })}
+
+      {cta && (
+        <Button
+          href={cta.href}
+          label={cta.label}
+          variant="white"
+          className="mt-3 w-full"
+        />
+      )}
+    </div>
+  </div>
+</header>

@@ -1,0 +1,93 @@
+---
+import { Icon } from 'astro-icon/components';
+
+/* =========================
+   Types
+========================= */
+export interface AboutFeature {
+  icon: string; // astro-icon name, example: "bi:globe2"
+  label: string;
+}
+
+export interface AboutStat {
+  value: string;
+  label: string;
+}
+
+export interface AboutSectionProps {
+  id?: string;
+  title: string;
+  description: string[];
+  features: AboutFeature[];
+  stats: AboutStat[];
+}
+
+/* =========================
+   Default / Sample Data
+========================= */
+const {
+  id = "about",
+  title = "关于澜青旅行社",
+description = [
+  "澜青旅行社扎根无锡太湖之滨，专注精品小团定制游。从鼋头渚的樱花到灵山的梵音，从惠山古镇的烟火到南长街的夜色——我们只做一件事：让你像本地人一样，真正走进无锡。",
+  "六年深耕，服务超过5000位游客。每一条路线都经过实地踩线，每一位向导都是无锡本地持证导游。不做走马观花的打卡游，只做让你回味多年的江南之旅。",
+],
+features = [
+  { icon: "bi:globe2", label: "深耕无锡本地" },
+  { icon: "bi:shield-check", label: "持证导游带队" },
+],
+stats = [
+  { value: "6+", label: "年深耕无锡" },
+  { value: "5K+", label: "满意游客" },
+  { value: "30+", label: "精品路线" },
+  { value: "100%", label: "本地持证向导" },
+],
+} = Astro.props as AboutSectionProps;
+---
+
+<!-- About Section -->
+<section
+  id={id}
+  class="relative py-16 md:py-20 bg-blue-900/20 overflow-hidden"
+>
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 items-center">
+
+      <!-- Text -->
+      <div>
+        <h2 class="text-3xl md:text-4xl font-semibold text-white">
+          {title}
+        </h2>
+
+        {description.map((text) => (
+          <p class="mt-4 text-white/70 leading-relaxed">
+            {text}
+          </p>
+        ))}
+
+        <div class="mt-6 flex flex-col md:flex-row md:items-center gap-4 text-white/80">
+          {features.map((item) => (
+            <div class="flex items-center gap-2">
+              <Icon name={item.icon} class="w-5 h-5" />
+              <span>{item.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-2 gap-6">
+        {stats.map((stat) => (
+          <div class="rounded-2xl bg-white/5 border border-white/10 p-6 backdrop-blur">
+            <div class="text-3xl font-semibold text-white">
+              {stat.value}
+            </div>
+            <div class="mt-1 text-white/70">
+              {stat.label}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

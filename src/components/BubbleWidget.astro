@@ -1,0 +1,162 @@
+---
+export interface BubbleWidgetProps {
+  id?: string;
+  bubbleCount?: number;
+  observerThreshold?: number;
+  className?: string;
+}
+
+const {
+  id = "bubble-layer",
+  bubbleCount = 7,
+  observerThreshold = 0.25,
+  className = "",
+} = Astro.props as BubbleWidgetProps;
+---
+
+<!-- Bubble Layer -->
+<div
+  id={id}
+  class={`absolute inset-0 z-10 pointer-events-none ${className}`}
+></div>
+
+<script define:vars={{ id, bubbleCount, observerThreshold }}>
+  (() => {
+    const bubbleLayer = document.getElementById(id);
+    if (!bubbleLayer) return;
+
+    /**
+     * Deep Background Bubble Animator
+     * Runs ONLY when visible
+     */
+
+    const BUBBLE_COUNT = bubbleCount;
+
+    /* =======================
+       Utils
+    ======================= */
+    const rand = (min, max) => Math.random() * (max - min) + min;
+
+    /* =======================
+       Bubble setup
+    ======================= */
+    const bubbles = [];
+
+    function createBubble() {
+      const bubble = document.createElement("div");
+
+      const size = rand(4, 8);
+      const opacity = rand(0.15, 0.5);
+      const speed = rand(20, 46);
+      const drift = rand(-8, 8);
+
+      const rect = bubbleLayer.getBoundingClientRect();
+      const x = rand(0, rect.width);
+      const y = rect.height + rand(0, rect.height * 0.4);
+
+      bubble.style.cssText = `
+        position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        border-radius: 9999px;
+        background: radial-gradient(
+          circle at 30% 30%,
+          rgba(255,255,255,0.75),
+          rgba(255,255,255,0.45),
+          rgba(255,255,255,0.25)
+        );
+        opacity: ${opacity};
+        filter: blur(0.8px);
+        will-change: transform;
+        pointer-events: none;
+      `;
+
+      bubbleLayer.appendChild(bubble);
+
+      bubbles.push({
+        el: bubble,
+        x,
+        y,
+        size,
+        speed,
+        drift,
+        phase: rand(0, Math.PI * 2),
+      });
+    }
+
+    function resetBubble(bubble) {
+      const rect = bubbleLayer.getBoundingClientRect();
+      bubble.x = rand(0, rect.width);
+      bubble.y = rect.height + rand(0, rect.height * 0.4);
+      bubble.phase = rand(0, Math.PI * 2);
+    }
+
+    function initBubbles() {
+      bubbleLayer.innerHTML = "";
+      bubbles.length = 0;
+      for (let i = 0; i < BUBBLE_COUNT; i++) createBubble();
+    }
+
+    /* =======================
+       Animation
+    ======================= */
+    let rafId = null;
+    let lastTime = 0;
+
+    function animate(now) {
+      if (!lastTime) lastTime = now;
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+
+      for (const bubble of bubbles) {
+        bubble.y -= bubble.speed * dt;
+        bubble.x += Math.sin(now / 1400 + bubble.phase) * bubble.drift * dt;
+
+        if (bubble.y + bubble.size < 0) {
+          resetBubble(bubble);
+        }
+
+        bubble.el.style.transform =
+          `translate3d(${bubble.x}px, ${bubble.y}px, 0)`;
+      }
+
+      rafId = requestAnimationFrame(animate);
+    }
+
+    function start() {
+      if (rafId) return;
+      lastTime = 0;
+      rafId = requestAnimationFrame(animate);
+    }
+
+    function stop() {
+      if (!rafId) return;
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+
+    /* =======================
+       Init + Observer
+    ======================= */
+    initBubbles();
+
+    const observer = new IntersectionObserver(
+      ([entry]) => (entry.isIntersecting ? start() : stop()),
+      { threshold: observerThreshold }
+    );
+
+    observer.observe(bubbleLayer);
+
+    /* =======================
+       Resize
+    ======================= */
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        initBubbles();
+        if (rafId) start();
+      }, 150);
+    });
+  })();
+</script>

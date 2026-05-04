@@ -1,0 +1,51 @@
+---
+import MainLayout from "@src/layouts/MainLayout.astro";
+import TourCard from "@src/components/TourCard.astro";
+import Pagination from "@src/components/Pagination.astro";
+
+import { getCollection } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import HeadingSection from "@src/components/HeadingSection.astro";
+
+export const getStaticPaths = (async () => {
+  const tours = await getCollection("tours");
+  const maxPerPage = 8;
+  const totalPages = Math.ceil(tours.length / maxPerPage);
+
+  return Array.from({ length: totalPages }, (_, i) => ({
+    params: { page: String(i + 1) },
+  }));
+}) satisfies GetStaticPaths;
+
+const currentPage = Number(Astro.params.page);
+const maxPerPage = 8;
+const allTours = await getCollection("tours");
+const totalPages = Math.ceil(allTours.length / maxPerPage);
+
+const start = (currentPage - 1) * maxPerPage;
+const visibleTours = allTours.slice(start, start + maxPerPage);
+---
+
+<MainLayout title={`Tours – Page ${currentPage}`}>
+  <HeadingSection
+    title="Explore Tour Packages"
+    description="Discover our curated selection of ocean adventures, from serene cruises to thrilling water sports. Find your perfect getaway today."
+  />
+  <section class="relative py-16 md:py-20 overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {visibleTours.map((tour) => (
+          <TourCard tour={tour} />
+        ))}
+      </div>
+
+      <div class="mt-16 flex justify-center">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          basePath="/tours"
+        />
+      </div>
+    </div>
+  </section>
+</MainLayout>

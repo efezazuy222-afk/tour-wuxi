@@ -1,0 +1,72 @@
+---
+/* =========================
+   Types
+========================= */
+export interface StoryStat {
+  value: string;
+  label: string;
+}
+
+export interface StorySectionProps {
+  id?: string;
+  title: string;
+  paragraphs: string[];
+  stats: StoryStat[];
+}
+
+/* =========================
+   Sample Data
+========================= */
+const {
+  id = "story",
+  title = "澜青的故事",
+paragraphs = [
+  "澜青旅行社诞生于无锡太湖之滨，由一群深爱江南水乡文化的旅游人创办。我们的初心很简单：让每一位来到无锡的旅人，不只是匆匆过客，而是真正走进这座城市的肌理——感受太湖的晨雾、聆听灵山的梵钟、品味惠山古镇的烟火气。",
+  "从第一条鼋头渚赏樱路线开始，澜青坚持小团定制、本地向导、深度体验。我们不做走马观花的打卡游，只做让你回味多年的江南之旅。六年下来，澜青已服务超过5000位游客，成为无锡本地口碑最好的精品旅行社之一。"
+],
+stats = [
+  { value: "6+", label: "年深耕无锡" },
+  { value: "5K+", label: "满意游客" },
+  { value: "30+", label: "精品路线" },
+  { value: "100%", label: "本地持证向导" },
+],
+} = Astro.props as StorySectionProps;
+---
+
+<!-- Story Section -->
+<section
+  id={id}
+  class="relative py-16 md:py-20 overflow-hidden"
+>
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+
+      <!-- Text -->
+      <div>
+        <h2 class="text-3xl md:text-4xl font-semibold text-white">
+          {title}
+        </h2>
+
+        {paragraphs.map((text) => (
+          <p class="mt-4 text-white/70 leading-relaxed">
+            {text}
+          </p>
+        ))}
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-2 gap-6">
+        {stats.map((stat) => (
+          <div class="rounded-2xl bg-white/5 border border-white/10 p-6 backdrop-blur">
+            <div class="text-3xl font-semibold text-white">
+              {stat.value}
+            </div>
+            <div class="mt-1 text-white/70">
+              {stat.label}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

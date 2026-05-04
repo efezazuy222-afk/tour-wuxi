@@ -1,0 +1,115 @@
+---
+import { Icon } from "astro-icon/components";
+import Button from "./Button.astro";
+
+export interface HeroAvatar {
+  src: string;
+  alt: string;
+}
+
+export interface HeroCTA {
+  label: string;
+  href: string;
+  className?: string;
+}
+
+export interface HeroSectionProps {
+  id?: string;
+  backgroundImage: string;
+  badgeText: string;
+  title: string;
+  description: string;
+  avatars: HeroAvatar[];
+  reviewText: string;
+  rating?: number; // 1–5
+  ctas: HeroCTA[];
+}
+
+const props = Astro.props as HeroSectionProps;
+
+const {
+  id = "home",
+  backgroundImage,
+  badgeText,
+  title,
+  description,
+  avatars,
+  reviewText,
+  rating = 5,
+  ctas,
+} = props;
+---
+
+<section
+  id={id}
+  class="relative flex min-h-[90vh] items-center overflow-hidden py-16 bg-blue-500"
+  style={`background-image:url('${backgroundImage}');background-size:cover;background-position:center;`}
+>
+  <!-- Overlay bottom -->
+  <div class="absolute inset-x-0 bottom-0 h-20 bg-linear-to-b from-transparent to-slate-950/70"></div>
+
+  <!-- Content -->
+  <div class="relative z-20 w-full">
+    <div class="mx-auto max-w-6xl px-4 py-16 lg:py-24">
+      <div class="max-w-2xl">
+
+        <!-- Badge -->
+        <span
+          class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/50 px-6 py-2 text-sm text-slate-800"
+        >
+          {badgeText}
+        </span>
+
+        <!-- Title -->
+        <h1
+          class="mt-4 text-4xl font-semibold tracking-tight text-blue-900 sm:text-5xl"
+        >
+          {title}
+        </h1>
+
+        <!-- Description -->
+        <p class="mt-4 text-base leading-relaxed text-slate-800 sm:text-lg">
+          {description}
+        </p>
+
+        <!-- Reviews -->
+        <div class="flex items-center gap-4 pt-4">
+          <!-- Avatars -->
+          <div class="flex -space-x-3">
+            {avatars.map((avatar) => (
+              <img
+                src={avatar.src}
+                alt={avatar.alt}
+                class="h-12 w-12 rounded-full bg-slate-800 border-2 border-white object-cover transition duration-500 hover:-translate-y-1"
+                loading="lazy"
+              />
+            ))}
+          </div>
+
+          <!-- Rating -->
+          <div class="flex flex-col">
+            <div class="mb-0.5 font-semibold text-blue-700">
+              {reviewText}
+            </div>
+            <div class="flex items-center gap-1 text-xl text-yellow-500">
+              {Array.from({ length: rating }).map(() => (
+                <Icon name="bi:star-fill" />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="mt-6 flex flex-col flex-wrap gap-4 sm:flex-row">
+          {ctas.map((cta) => (
+            <Button
+              href={cta.href}
+              label={cta.label}
+              className={`max-sm:w-full px-6 py-3 shadow-lg hover:scale-110 transition ${cta.className ?? ""}`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

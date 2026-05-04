@@ -1,0 +1,50 @@
+---
+export interface Brand {
+  name: string;
+  logo: string;
+}
+
+export interface BrandSectionProps {
+  id?: string;
+  title: string;
+  brands: Brand[];
+}
+
+/* =========================
+  Sample Data
+========================= */
+const {
+  id = "brands",
+  title = "Trusted by Global Partners",
+  brands = [
+    { name: "Brand 1", logo: "/img/brand1.png" },
+    { name: "Brand 2", logo: "/img/brand2.png" },
+    { name: "Brand 3", logo: "/img/brand3.png" },
+    { name: "Brand 4", logo: "/img/brand4.png" },
+    { name: "Brand 5", logo: "/img/brand5.png" },
+  ],
+} = Astro.props as BrandSectionProps;
+---
+
+<!-- Brand Section -->
+<section
+  id={id}
+  class="relative py-16 md:py-20 bg-blue-900/20 overflow-hidden mb-6"
+>
+  <div class="max-w-6xl mx-auto px-4 text-center">
+    <h2 class="text-xl md:text-2xl font-semibold text-white">
+      {title}
+    </h2>
+
+    <div class="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 items-center">
+      {brands.map((brand) => (
+        <img
+          src={brand.logo}
+          alt={brand.name}
+          class="mx-auto w-4/5 opacity-90 hover:opacity-100 transition grayscale"
+          loading="lazy"
+        />
+      ))}
+    </div>
+  </div>
+</section>

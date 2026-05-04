@@ -1,0 +1,111 @@
+---
+title: "Documentation"
+updated: "2025-01-01"
+---
+## Setup and Installation
+
+Ocean-Astro Template is a Astro template designed for Travel Agency Website. This guide provides detailed instructions on setup, installation, and customization to help you tailor Ocean-Astro to your needs.
+
+### Step 1: Prepare Your Tools
+
+Ensure you have the following tools installed:
+
+- **Node.js**: Download and install from [nodejs.org](https://nodejs.org) (includes npm).
+- **npm**: Node Package Manager, installed with Node.js. Verify with `npm -v` in your terminal.
+- **Visual Studio Code**: Recommended code editor, available at [code.visualstudio.com](https://code.visualstudio.com).
+
+### Step 2: Clone and Open the Project
+
+After obtaining the Ocean-Astro Template (provided via secure link or client portal):
+
+1. Download and unzip the project folder.
+2. Open the project folder in Visual Studio Code or your preferred editor.
+3. Open a terminal in VS Code (`Terminal > New Terminal`) and navigate to the project root if not already there.
+
+### Step 3: Install Dependencies and Run the Project
+
+Install and run the project using npm commands:
+
+```bash
+npm install
+npm run dev
+npm run build
+```
+
+Open <a href="http://localhost:4321" target="_blank" rel="noopener noreferrer">http://localhost:4321</a> in your browser to preview the portal.  
+`npm run build` generates optimized production files in the `dist` folder, ready for deployment to a secure server.
+
+## Customization
+
+Personalize the Ocean-Astro Client Portal to align with your organization’s branding and security requirements with the following customization options.
+
+### Custom Tailwind Classes
+
+Modify Tailwind CSS classes directly in the `.astro` files within the `/src` folder to adjust styling. For example, update colors, fonts, or layouts using utilities like `bg-blue-600` or `p-8`. Refer to the [Tailwind CSS documentation](https://tailwindcss.com/docs) for available classes.
+
+### Modify Tailwind Configuration
+
+Customize global styles, fonts, colors, and other configurations in the Tailwind configuration file.  
+Edit `src/styles/style.css` to define custom colors, fonts, or other styles. Example:
+
+```css
+@import "tailwindcss";
+@theme {
+    --font-sans: 'Inter', sans-serif;
+}
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-slate-200, currentColor);
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-slate-200);
+  }
+  button, [role="button"] {
+    cursor: pointer;
+  }
+}
+@custom-variant dark (&:where(.dark, .dark *));
+```
+
+## Deployment
+
+When your site is ready, deploy it to a secure and scalable platform:
+
+- **Vercel**: Seamless integration with Astro projects. [vercel.com](https://vercel.com)
+- **Netlify**: Continuous deployment and edge functions. [netlify.com](https://www.netlify.com)
+- **Custom Server**: Upload the `dist/` folder to your server via FTP, SSH, or CI/CD pipelines.
+
+## Project Folder Structure
+
+Here’s an overview of the recommended folder structure:
+
+```
+src/
+ ├── components/     # Reusable UI components
+ ├── content/        # MDX/Markdown data files (privacy, terms, docs, blog, etc.)
+ ├── layouts/        # Layout components
+ ├── pages/          # Page routes (e.g., /privacy, /terms, /docs)
+ ├── styles/         # Global styles and Tailwind config
+ └── img/            # Images
+```
+
+## Adding New Pages
+
+Create `.astro` or `.mdx` files in `src/content/pages/` depending on whether the page is static or content-driven.
+
+## Best Practices
+
+- Keep components **small and reusable** for easier maintenance.
+- Enable **SEO tags** in your layout for better discoverability.
+- Use **Image optimization** (Astro’s `Image` component) for performance.
+
+## Next Steps
+
+- Explore the **components** inside `/src/components/`.
+- Add your own **Blog posts** in `/src/content/blog/`.
+- Add your own **Tour** in `/src/content/tours/`.

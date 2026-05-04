@@ -1,0 +1,99 @@
+---
+import { Icon } from 'astro-icon/components';
+import FishWidget from './FishWidget.astro';
+import BubbleWidget from './BubbleWidget.astro';
+import Button, { type ButtonVariant } from './Button.astro';
+
+export interface NotFoundButton {
+  href: string;
+  label: string;
+  icon: string;
+  variant?: ButtonVariant;
+}
+
+export interface NotFoundSectionProps {
+  errorCode?: string;
+  title?: string;
+  description?: string;
+  buttons?: NotFoundButton[];
+  backgroundImage?: string;
+  minHeight?: string;
+  className?: string;
+}
+
+const {
+  errorCode = "404",
+title = "页面未找到",
+description = "您访问的页面不存在或已被移动。让澜青带您返回无锡之旅。",
+buttons = [
+  {
+    href: "/",
+    label: "返回首页",
+    icon: "bi:house",
+    variant: "white"
+  },
+  {
+    href: "/packages",
+    label: "浏览无锡路线",
+    icon: "bi:compass",
+    variant: "outline"
+  },
+],
+  backgroundImage = "/img/about-sea.jpg",
+  minHeight = "78vh",
+  className = "",
+} = Astro.props as NotFoundSectionProps;
+---
+
+<!-- NotFound Section -->
+<section
+  class={`relative overflow-hidden pt-24 pb-16 flex items-center mb-6 ${className}`}
+  style={`
+    background-image: url('${backgroundImage}');
+    background-size: cover;
+    background-position: center;
+    min-height: ${minHeight};
+  `}
+>
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-linear-to-b from-slate-950/70 via-slate-950/50 to-slate-950/85"></div>
+
+  <!-- Soft Light Rays -->
+  <div class="pointer-events-none absolute inset-0 opacity-40 mix-blend-screen">
+    <div class="absolute -top-24 left-1/4 h-[140%] w-40 rotate-12 bg-linear-to-b from-cyan-200/20 via-cyan-200/0 to-transparent blur-2xl"></div>
+    <div class="absolute -top-24 left-2/3 h-[140%] w-56 -rotate-6 bg-linear-to-b from-sky-200/15 via-sky-200/0 to-transparent blur-2xl"></div>
+  </div>
+
+  <!-- Fish Layer -->
+  <FishWidget id="fish-layer" />
+
+  <!-- Bubble Layer -->
+  <BubbleWidget id="bubble-layer" />
+
+  <!-- Content -->
+  <div class="relative z-10 max-w-2xl mx-auto px-4 text-center">
+    <div class="text-7xl md:text-8xl font-semibold text-white tracking-tight mb-3">
+      {errorCode}
+    </div>
+    <h1 class="mb-2 text-2xl md:text-3xl font-semibold text-white">
+      {title}
+    </h1>
+    <p class="text-white/90 leading-relaxed">
+      {description}
+    </p>
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+      {buttons.map((button: NotFoundButton) => (
+        <div class="max-sm:w-full inline-flex items-center gap-2">
+          <Button
+            href={button.href}
+            variant={button.variant}
+            className="max-sm:w-full"
+        >
+            <Icon name={button.icon} class="w-5 h-5" />
+            {button.label}
+        </Button>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

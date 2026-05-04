@@ -1,0 +1,63 @@
+---
+import ReviewCard from "@src/components/ReviewCard.astro";
+
+/* =========================
+   Types
+========================= */
+export interface Review {
+  name: string;
+  country: string;
+  avatar: string;
+  rating: number;
+  message: string;
+}
+
+export interface ReviewSectionProps {
+  id?: string;
+  reviews: Review[];
+}
+
+/* =========================
+   Default / Sample Data
+========================= */
+const {
+  id = "reviews",
+  reviews = [
+  {
+    name: "张先生",
+    country: "上海",
+    avatar: "/img/male1.jpg",
+    rating: 5,
+    message: "澜青的鼋头渚赏樱路线安排得太好了，导游小周是无锡本地人，讲了很多惠山古镇的老故事，全家都很满意！"
+  },
+  {
+    name: "李女士",
+    country: "北京",
+    avatar: "/img/female1.jpg",
+    rating: 5,
+    message: "第一次来无锡，澜青帮我们定制了三天两晚的行程，灵山大佛、南长街、太湖游船全都体验了，不赶不累，强烈推荐。"
+  },
+  {
+    name: "王先生",
+    country: "广州",
+    avatar: "/img/male2.jpg",
+    rating: 5,
+    message: "精品小团真的不一样，只有8个人，导游全程陪逛惠山古镇，还带我们吃了超地道的太湖三白，下次还选澜青。"
+  },
+],
+} = Astro.props as ReviewSectionProps;
+---
+
+<!-- Review Section -->
+<section
+  id={id}
+  class="relative py-16 md:py-20 overflow-hidden"
+>
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {reviews.map((review) => (
+        <ReviewCard {...review} />
+      ))}
+    </div>
+  </div>
+</section>

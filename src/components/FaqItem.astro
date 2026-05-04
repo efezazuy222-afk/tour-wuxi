@@ -1,0 +1,41 @@
+---
+import { Icon } from "astro-icon/components";
+
+/* =========================
+   Types
+========================= */
+export interface FaqItemProps {
+  question: string;
+  answer: string;
+  open?: boolean;
+}
+
+const { question, answer, open = false } = Astro.props as FaqItemProps;
+---
+
+<div
+  x-data={`{ open: ${open} }`}
+  class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur"
+>
+  <button
+    @click="open = !open"
+    class="w-full flex items-center justify-between gap-4 p-5 text-left"
+  >
+    <span class="text-white font-medium">
+      {question}
+    </span>
+
+    <span class="text-white">
+      <Icon x-show="open" name="bi:dash-lg" class="w-5 h-5" />
+      <Icon x-show="!open" name="bi:plus-lg" class="w-5 h-5" />
+    </span>
+  </button>
+
+  <div
+    x-show="open"
+    x-collapse
+    class="px-5 pb-5 text-white/70 leading-relaxed"
+  >
+    {answer}
+  </div>
+</div>

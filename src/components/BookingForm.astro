@@ -1,0 +1,256 @@
+---
+export interface TourOption {
+  name: string;
+  price: number;
+}
+
+export interface PackageOption {
+  id: string;
+  label: string;
+  multiplier: number;
+  description: string;
+}
+
+export interface BookingFormProps {
+  tours?: TourOption[];
+  packages?: PackageOption[];
+  className?: string;
+}
+
+const {
+  tours = [
+    { name: "鼋头渚樱花季一日游", price: 299 },
+    { name: "灵山大佛+拈花湾禅意之旅", price: 399 },
+    { name: "惠山古镇+南长街美食半日游", price: 199 },
+    { name: "太湖游船观鸥一日游", price: 259 },
+    { name: "无锡3天2晚深度定制游", price: 1499 },
+  ],
+  packages = [
+    { id: "standard", label: "标准套餐", multiplier: 1, description: "+ ¥0" },
+    { id: "private", label: "精品小团", multiplier: 1.6, description: "+60%" },
+    { id: "premium", label: "尊享定制", multiplier: 2.4, description: "+140%" },
+  ],
+  className = "",
+} = Astro.props as BookingFormProps;
+---
+
+<section class={`relative py-16 md:py-20 ${className}`}>
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+      <!-- LEFT: FORM -->
+      <form id="bookingForm" class="lg:col-span-2 rounded-3xl bg-white/5 border border-white/10 backdrop-blur p-8 space-y-6">
+        <h2 class="text-2xl font-semibold text-white">
+          预订信息
+        </h2>
+
+        <!-- Tour -->
+        <div>
+          <label class="block text-sm text-white/70 mb-2">选择路线</label>
+          <select
+            id="tourSelect"
+            name="tour"
+            required
+            class="w-full rounded-xl bg-black/30 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition"
+          >
+            {tours.map((tour) => (
+              <option value={tour.name} data-price={tour.price}>
+                {tour.name} (¥{tour.price})
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <!-- Date & Guests -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm text-white/70 mb-2">出行日期</label>
+            <input
+              type="date"
+              name="date"
+              required
+              class="w-full rounded-xl bg-black/30 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm text-white/70 mb-2">出行人数</label>
+            <input
+              id="guestInput"
+              type="number"
+              name="guests"
+              min="1"
+              value="1"
+              required
+              class="w-full rounded-xl bg-black/30 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition"
+            />
+          </div>
+        </div>
+
+        <!-- Package -->
+        <div>
+          <label class="block text-sm text-white/70 mb-2">套餐选择</label>
+
+          <div class="space-y-3">
+            {packages.map((pkg, index) => (
+              <div>
+                <input
+                  type="radio"
+                  name="package"
+                  value={pkg.id}
+                  data-multiplier={pkg.multiplier}
+                  checked={index === 0}
+                  class="peer hidden"
+                  id={`pkg-${pkg.id}`}
+                />
+                <label
+                  for={`pkg-${pkg.id}`}
+                  class="flex items-center justify-between rounded-xl bg-black/30 border border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/10 px-4 py-3 cursor-pointer transition"
+                >
+                  <span class="text-white">{pkg.label}</span>
+                  <span class="text-white/60 text-sm">{pkg.description}</span>
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm text-white/70 mb-2">姓名</label>
+            <input
+              type="text"
+              name="fullName"
+              placeholder="请输入您的姓名"
+              required
+              class="w-full rounded-xl bg-black/30 border border-white/20 px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-blue-500 transition"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm text-white/70 mb-2">邮箱</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="请输入您的邮箱"
+              required
+              class="w-full rounded-xl bg-black/30 border border-white/20 px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-blue-500 transition"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm text-white/70 mb-2">手机号码</label>
+          <input
+            type="tel"
+            name="phone"
+            placeholder="请输入您的手机号"
+            required
+            class="w-full rounded-xl bg-black/30 border border-white/20 px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-blue-500 transition"
+          />
+        </div>
+
+        <!-- Notes -->
+        <div>
+          <label class="block text-sm text-white/70 mb-2">特殊需求</label>
+          <textarea
+            name="notes"
+            rows="4"
+            placeholder="如饮食要求、老人小孩同行、或任何其他需求..."
+            class="w-full rounded-xl bg-black/30 border border-white/20 px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-blue-500 transition resize-none"
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full rounded-xl bg-white px-6 py-3 font-semibold text-black hover:bg-white/90 hover:scale-105 transition"
+        >
+          提交预订
+        </button>
+      </form>
+
+      <!-- RIGHT: SUMMARY -->
+      <div class="rounded-3xl bg-white/5 border border-white/10 backdrop-blur p-6 space-y-4 lg:sticky lg:top-24">
+        <h3 class="text-xl font-semibold text-white">
+          订单摘要
+        </h3>
+
+        <div class="flex justify-between text-white/70">
+          <span id="summaryTour">{tours[0].name}</span>
+          <span id="summaryPrice">¥{tours[0].price}</span>
+        </div>
+
+        <div class="flex justify-between text-white/70">
+          <span>出行人数</span>
+          <span id="summaryGuests">1</span>
+        </div>
+
+        <div class="flex justify-between text-white/70">
+          <span>套餐</span>
+          <span id="summaryPackage">{packages[0].label}</span>
+        </div>
+
+        <div class="border-t border-white/10 pt-4 flex justify-between text-white font-semibold text-lg">
+          <span>合计</span>
+          <span id="summaryTotal">¥{tours[0].price}</span>
+        </div>
+
+        <div class="text-sm text-white/50 space-y-1">
+          <p>📞 电话：400-858-0518</p>
+          <p>💬 微信：18012361217</p>
+          <p>📧 邮箱：932168783@qq.com</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const form = document.getElementById('bookingForm') as HTMLFormElement;
+    const tourSelect = document.getElementById('tourSelect') as HTMLSelectElement;
+    const guestInput = document.getElementById('guestInput') as HTMLInputElement;
+    const packageInputs = document.querySelectorAll('input[name="package"]') as NodeListOf<HTMLInputElement>;
+
+    const summaryTour = document.getElementById('summaryTour');
+    const summaryPrice = document.getElementById('summaryPrice');
+    const summaryGuests = document.getElementById('summaryGuests');
+    const summaryPackage = document.getElementById('summaryPackage');
+    const summaryTotal = document.getElementById('summaryTotal');
+
+    function updateSummary() {
+      const selectedOption = tourSelect.options[tourSelect.selectedIndex];
+      const tourName = selectedOption.value;
+      const basePrice = parseFloat(selectedOption.dataset.price || '0');
+
+      const guests = parseInt(guestInput.value) || 1;
+
+      const selectedPackage = Array.from(packageInputs).find(input => input.checked);
+      const multiplier = parseFloat(selectedPackage?.dataset.multiplier || '1');
+      const packageLabel = selectedPackage?.nextElementSibling?.querySelector('span')?.textContent || '标准套餐';
+
+      const total = basePrice * guests * multiplier;
+
+      if (summaryTour) summaryTour.textContent = tourName;
+      if (summaryPrice) summaryPrice.textContent = `¥${basePrice}`;
+      if (summaryGuests) summaryGuests.textContent = guests.toString();
+      if (summaryPackage) summaryPackage.textContent = packageLabel;
+      if (summaryTotal) summaryTotal.textContent = `¥${total}`;
+    }
+
+    tourSelect?.addEventListener('change', updateSummary);
+    guestInput?.addEventListener('input', updateSummary);
+    packageInputs.forEach(input => input.addEventListener('change', updateSummary));
+
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      
+      alert('预订提交成功！澜青旅行顾问将尽快与你联系。');
+    });
+
+    updateSummary();
+  })();
+</script>

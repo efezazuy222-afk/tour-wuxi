@@ -1,0 +1,87 @@
+---
+import MainLayout from "@src/layouts/MainLayout.astro";
+import BlogCard from "@src/components/BlogCard.astro";
+import Pagination from "@src/components/Pagination.astro";
+import HeadingSection from "@src/components/HeadingSection.astro";
+
+import { getCollection } from "astro:content";
+import type { GetStaticPaths } from "astro";
+
+/* =========================
+   Build-time Pagination
+========================= */
+export const getStaticPaths = (async () => {
+  const allPosts = await getCollection("blog");
+
+  const maxPerPage = 6;
+
+  const totalPages = Math.ceil(allPosts.length / maxPerPage);
+
+  return Array.from({ length: totalPages }, (_, i) => ({
+    params: { page: String(i + 1) },
+  }));
+}) satisfies GetStaticPaths;
+
+/* =========================
+   Page Logic
+========================= */
+const { page } = Astro.params;
+const currentPage = Number(page);
+
+// Safety guard
+if (Number.isNaN(currentPage) || currentPage < 1) {
+  throw new Error("Invalid page number");
+}
+
+// Get posts
+const allPosts = await getCollection("blog");
+
+// Sort posts by date (newest first)
+const posts = allPosts.sort((a, b) => {
+  const dateA =
+    typeof a.data.date === "string" ? new Date(a.data.date) : a.data.date;
+  const dateB =
+    typeof b.data.date === "string" ? new Date(b.data.date) : b.data.date;
+
+  return dateB.valueOf() - dateA.valueOf();
+});
+
+const maxPerPage = 6;
+
+// Total pages
+const totalPages = Math.ceil(posts.length / maxPerPage);
+
+// Slice posts for current page
+const start = (currentPage - 1) * maxPerPage;
+const end = start + maxPerPage;
+const visiblePosts = posts.slice(start, end);
+---
+
+<MainLayout title={`Blog – Page ${currentPage} | Constructors`}>
+  <HeadingSection
+    title="Insights & Updates"
+    description="Stay ahead with expert insights on heavy equipment, construction best practices, safety standards, and California infrastructure developments."
+  />
+
+  <section class="relative py-16 md:py-20 overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4">
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {visiblePosts.map((post) => (
+          <BlogCard post={post} />
+        ))}
+      </div>
+
+      {totalPages > 1 && (
+        <div class="flex justify-center mt-16">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            basePath="/blogs"
+          />
+        </div>
+      )}
+
+    </div>
+  </section>
+</MainLayout>

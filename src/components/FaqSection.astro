@@ -1,0 +1,75 @@
+---
+import FaqItem from "@src/components/FaqItem.astro";
+
+/* =========================
+   Types
+========================= */
+export interface Faq {
+  question: string;
+  answer: string;
+  open?: boolean;
+}
+
+export interface FaqSectionProps {
+  id?: string;
+  items: Faq[];
+}
+
+/* =========================
+   Default / Sample Data
+========================= */
+const {
+  id = "faq",
+  items = [
+    {
+      question: "澜青旅行社提供哪些无锡旅游路线？",
+      answer:
+        "我们提供太湖鼋头渚赏樱一日游、灵山大佛+拈花湾禅意之旅、惠山古镇+南长街美食半日游、蠡园+蠡湖皮划艇体验、太湖游船观鸥、以及3天2晚无锡深度定制游等多种路线，支持家庭、情侣、摄影等主题定制。",
+      open: true,
+    },
+    {
+      question: "如何预订澜青的旅游路线？",
+      answer:
+        "您可以通过官网在线咨询、拨打澜青客服电话、或添加微信客服进行预订。确认行程后支付定金即可锁定名额，出发前3天支付尾款。支持微信、支付宝、银行转账。",
+    },
+    {
+      question: "预订后可以取消或改期吗？",
+      answer:
+        "可以。出发前7天以上取消全额退款，3-7天取消退50%，3天内取消退30%。改期不收取额外费用，但需视新日期的名额情况而定。如因天气等不可抗力因素，澜青将免费取消或改期。",
+    },
+    {
+      question: "无锡旅游的最佳季节是什么时候？",
+      answer:
+        "春季（3-4月）是鼋头渚樱花季，最受欢迎；秋季（9-11月）天高气爽，太湖鱼肥蟹美；夏季适合蠡湖水上活动和夜游南长街；冬季可体验惠山古镇年味和灵山跨年祈福。四季皆宜，各有风情。",
+    },
+    {
+      question: "带老人小孩出游方便吗？",
+      answer:
+        "非常方便。澜青精品小团每团不超过12人，行程节奏可控。我们有专门的亲子路线和银发族路线，减少步行距离、增加休息时间，导游全程陪护。如需轮椅或婴儿车，请提前告知，我们可协助安排。",
+    },
+    {
+      question: "澜青的导游都是无锡本地人吗？",
+      answer:
+        "是的，澜青所有导游均为无锡本地持证导游，对太湖鼋头渚、灵山、惠山古镇的历史文化如数家珍，能带您深入体验最地道的江南水乡风情，而非走马观花的打卡游。",
+    },
+  ],
+} = Astro.props as FaqSectionProps;
+---
+
+<!-- FAQ Section -->
+<section
+  id={id}
+  class="relative py-16 md:py-20 overflow-hidden"
+>
+  <div class="max-w-3xl mx-auto px-4">
+    <div class="space-y-4">
+      {items.map((item) => (
+        <FaqItem
+          question={item.question}
+          answer={item.answer}
+          open={item.open}
+        />
+      ))}
+    </div>
+  </div>
+</section>

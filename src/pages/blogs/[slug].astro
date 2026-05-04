@@ -1,0 +1,103 @@
+---
+import MainLayout from "@src/layouts/MainLayout.astro";
+import AuthorCard from "@src/components/AuthorCard.astro";
+import BlogCard from "@src/components/BlogCard.astro";
+import { getCollection, render } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import ShareLink from "@src/components/ShareLink.astro";
+import { Icon } from "astro-icon/components";
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.id.replace(/\.mdx$/, "") },
+    props: { post },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const data = post.data;
+
+// Convert date
+const postDate = typeof data.date === "string" ? new Date(data.date) : data.date;
+const formattedDate = new Intl.DateTimeFormat("id-ID", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+}).format(postDate);
+
+// Related posts
+const allPosts = await getCollection("blog");
+const related = allPosts
+  .filter((p) => p.data.category === data.category && p.id !== post.id)
+  .slice(0, 3);
+---
+
+<MainLayout title={`${data.title} – Ocean Blog`}>
+  <section
+    class="relative pt-32 md:min-h-[55vh] flex items-end overflow-hidden"
+    style={{
+      backgroundImage: `url(${data.cover})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    }}
+  >
+      <div class="absolute inset-0 bg-linear-to-b from-slate-950/40 via-slate-950/70 to-blue-950/95"></div>
+      <div class="relative z-10 w-full">
+        <div class="max-w-6xl mx-auto px-4 pb-16">
+          <span class="inline-block rounded-full bg-white/80 px-4 py-1 text-xs text-black mb-4">
+             {data.category}
+          </span>
+
+          <h1 class="text-2xl md:text-3xl lg:text-4xl font-semibold text-white max-w-4xl">
+            {data.title}
+          </h1>
+
+          <div class="mt-4 flex flex-wrap items-center gap-4 text-white/70 text-sm">
+            <span class="flex items-center gap-2">
+                <Icon name="bi:calendar-event" /> <time datetime={postDate.toISOString()}>{formattedDate}</time>
+            </span>
+            
+            <span class="flex items-center gap-2">
+                <Icon name="bi:clock" /> {data.readTime} min read
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="relative pb-16">
+      <div class="max-w-6xl mx-auto px-4">
+        <article class="post-content rounded-2xl bg-slate-900 border-slate-200 p-6 md:p-8 shadow-md shadow-blue-950">
+          <Content />
+        </article>
+
+        <!-- Author and Share  -->
+        <div class="mt-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <!-- Author -->
+          <AuthorCard author={data.author} />
+
+          <!-- SharelINK -->
+          <ShareLink
+            slug={post.id.replace(/\.mdx$/, "")}
+            title={data.title}
+            />
+        </div>
+      </div>
+    </section>
+
+    {related.length > 0 && (
+    <section class="relative py-16 md:py-20 bg-blue-900/20 overflow-hidden mb-6">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-semibold text-white mb-10">
+          Related Articles
+        </h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {related.map((r) => <BlogCard post={r} />)}
+        </div>
+      </div>
+    </section>
+    )}
+</MainLayout>

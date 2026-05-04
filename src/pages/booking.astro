@@ -1,0 +1,13 @@
+---
+import BookingForm from "@src/components/BookingForm.astro";
+import HeadingSection from "@src/components/HeadingSection.astro";
+import MainLayout from "@src/layouts/MainLayout.astro";
+---
+
+<MainLayout title="立即咨询 | 无锡旅游预订 | 澜青旅行社" description="澜青旅行社无锡旅游预订咨询，电话400-858-0518，微信18012361217，定制你的专属江南之旅。">
+  <HeadingSection 
+    title="立即咨询澜青"
+    description="填写以下表单，澜青旅行顾问将在24小时内与你联系，为你定制专属无锡之旅。你也可以直接拨打 400-858-0518 或添加微信 18012361217。"
+  />
+  <BookingForm />
+</MainLayout>

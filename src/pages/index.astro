@@ -1,0 +1,75 @@
+---
+import AboutSection from "@src/components/AboutSection.astro";
+import BlogSection from "@src/components/BlogSection.astro";
+import CtaSection from "@src/components/CtaSection.astro";
+import HeroSection from "@src/components/HeroSection.astro";
+import TourSection from "@src/components/TourSection.astro";
+import WhySection from "@src/components/WhySection.astro";
+import MainLayout from "@src/layouts/MainLayout.astro";
+---
+
+<MainLayout title="无锡旅游攻略 | 太湖鼋头渚灵山惠山古镇一站式指南 | 澜青旅行社" description="2026年最新无锡旅游攻略，涵盖太湖鼋头渚樱花季、灵山大佛、惠山古镇、南长街等必去景点，本地人推荐的美食、住宿、交通全指南。澜青旅行社出品。">
+  <HeroSection
+      backgroundImage="/img/hero.jpg"
+      badgeText="澜青旅行社 · 无锡本地品质游"
+      title="无锡旅游全攻略 — 太湖明珠·江南盛地"
+      description="澜青旅行社为你精选无锡必去景点：太湖鼋头渚、灵山大佛、惠山古镇、南长街，地道美食与舒适住宿一站搞定。"
+      avatars={[
+        { src: "/img/male1.jpg", alt: "Traveler 1" },
+        { src: "/img/male2.jpg", alt: "Traveler 2" },
+        { src: "/img/female1.jpg", alt: "Traveler 3" },
+        { src: "/img/female2.jpg", alt: "Traveler 4" },
+      ]}
+      reviewText="900+ reviews"
+      reviewText="1000+ 游客好评"
+      ctas={[
+  {
+    label: "无锡精品路线",
+    href: "/tours",
+    className: "bg-blue-700 hover:bg-blue-800 text-white"
+  },
+  {
+    label: "关于澜青",
+    href: "#about",
+    className: "bg-green-700 hover:bg-green-800 text-white"
+  }
+]}
+    />
+  <WhySection />
+  <TourSection />
+  <AboutSection />
+  <CtaSection />
+  <BlogSection id="blogs" maxPosts={3} />
+</MainLayout>
+<script>
+  /**
+   * Smooth Scroll
+   */
+  (function initSmoothScroll(offset: number = 80): void {
+    document
+      .querySelectorAll<HTMLAnchorElement>('a[href^="#"]')
+      .forEach((anchor) => {
+        anchor.addEventListener("click", (e: MouseEvent) => {
+          const href = anchor.getAttribute("href");
+          if (!href || href === "#" || href.length < 2) return;
+
+          const target = document.querySelector<HTMLElement>(href);
+          if (!target) return;
+
+          e.preventDefault();
+
+          const top =
+            target.getBoundingClientRect().top +
+            window.pageYOffset -
+            offset;
+
+          window.scrollTo({
+            top,
+            behavior: "smooth",
+          });
+
+          history.pushState(null, "", href);
+        });
+      });
+  })(80);
+</script>

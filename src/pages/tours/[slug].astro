@@ -1,0 +1,168 @@
+---
+import MainLayout from "@src/layouts/MainLayout.astro";
+import { Icon } from "astro-icon/components";
+import { getCollection, render } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import TourGallery from "@src/components/TourGallery.astro";
+import ShareLink from "@src/components/ShareLink.astro";
+
+/* =========================
+   Static Paths
+========================= */
+export const getStaticPaths = (async () => {
+  const tours = await getCollection("tours");
+
+  return tours.map((tour) => ({
+    params: { slug: tour.id.replace(/\.mdx$/, "") },
+    props: { tour },
+  }));
+}) satisfies GetStaticPaths;
+
+/* =========================
+   Page Data
+========================= */
+const { tour } = Astro.props;
+const { Content } = await render(tour);
+const data = tour.data;
+
+// Gallery fallback
+const gallery = data.gallery?.length ? data.gallery : [data.cover];
+
+// Rating fallback
+const rating = data.rating ?? 5;
+const reviews = data.reviews ?? 0;
+---
+
+<MainLayout title={`${data.title} – Ocean Travel`}>
+  <!-- =========================
+    HERO / DETAIL
+  ========================= -->
+  <section>
+    <div class="relative pt-32 pb-20">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+            <TourGallery
+                title={data.title}
+                cover={data.cover}
+                duration={data.duration}
+                gallery={data.gallery}
+                />
+          <div>
+            <h1 class="text-3xl md:text-4xl font-semibold text-white">
+              {data.title}
+            </h1>
+
+            <p class="mt-4 mb-4 text-white/70 leading-relaxed">
+              {data.description}
+            </p>
+
+            <!-- Rating -->
+            <div class="mb-6 flex items-center gap-2 text-white">
+              <div class="flex items-center gap-1 text-yellow-500">
+                {Array.from({ length: Math.floor(rating) }).map(() => (
+                  <Icon name="bi:star-fill" />
+                ))}
+
+                {rating % 1 >= 0.5 && <Icon name="bi:star-half" />}
+              </div>
+
+              {reviews > 0 && (
+                <span>({rating}) {reviews}+ Reviews</span>
+              )}
+            </div>
+
+            <!-- =========================
+              PRICE VARIANTS (FROM MDX)
+            ========================= -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {data.pricing.map((pkg, index) => (
+                <div>
+                  <input
+                    type="radio"
+                    name="package"
+                    id={`pkg-${index}`}
+                    class="peer hidden"
+                    checked={index === 0}
+                  />
+                  <label
+                    for={`pkg-${index}`}
+                    class="flex items-center justify-between rounded-xl bg-black/30 border border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/10 px-4 py-3 cursor-pointer transition"
+                  >
+                    <span class="text-white">{pkg.label}</span>
+                    <span class="text-white/60 text-sm">
+                      ${pkg.price}
+                    </span>
+                  </label>
+                </div>
+              ))}
+            </div>
+
+            <!-- Facilities -->
+            {data.facilities?.length && (
+              <div class="mt-8">
+                <h3 class="text-lg font-semibold text-white mb-3">
+                  Included Facilities
+                </h3>
+                <ul class="grid grid-cols-2 gap-3 text-white/70">
+                  {data.facilities.map((item) => (
+                    <li class="flex items-center gap-2">
+                      <Icon name="bi:check-circle" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <!-- Location -->
+            <div class="mt-6 flex items-center gap-2 text-white/80">
+              <Icon name="bi:geo-alt" />
+              <span>{data.location}</span>
+            </div>
+
+            <!-- CTA -->
+            <div class="mt-8">
+              <a
+                href="/booking"
+                class="w-full flex items-center justify-center gap-3 rounded-xl bg-white px-6 py-3 font-semibold text-black hover:bg-white/90 transition"
+              >
+                <Icon name="bi:send" />
+                Book This Tour
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================
+      CONTENT (MDX)
+    ========================= -->
+    <div class="relative">
+      <div class="max-w-6xl mx-auto px-4">
+        <article class="post-content rounded-2xl bg-slate-900 p-6 md:p-8 shadow-md shadow-blue-950">
+          <Content />
+          <span class="inline-block rounded-full bg-white/80 px-4 py-1 mt-4 text-xs text-black">
+             {data.category}
+          </span>
+        </article>
+      </div>
+    </div>
+
+    <!-- =========================
+      SHARE
+    ========================= -->
+    <div class="relative py-6">
+      <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <span class="text-white/60">Share this tour:</span>
+
+        <ShareLink 
+          slug={tour.id.replace(/\.mdx$/, "")}
+          title={data.title}
+          path="tours"
+        />
+      </div>
+    </div>
+  </section>
+</MainLayout>

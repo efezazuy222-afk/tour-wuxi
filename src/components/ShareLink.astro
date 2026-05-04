@@ -1,0 +1,74 @@
+---
+import { Icon } from "astro-icon/components";
+
+/* =========================
+   Types
+========================= */
+export interface ShareLinkProps {
+  slug: string;
+  title: string;
+  siteUrl?: string;
+  path?: string;
+}
+
+/* =========================
+   Props & Defaults
+========================= */
+const {
+  slug,
+  title,
+  path = "blogs",
+  siteUrl = import.meta.env.SITE ?? "",
+} = Astro.props as ShareLinkProps;
+
+const url = `${siteUrl.replace(/\/$/, "")}/${path.replace(/^\/|\/$/g, "")}/${slug}`;
+const encodedUrl = encodeURIComponent(url);
+const encodedTitle = encodeURIComponent(title);
+---
+
+<div class="flex items-center gap-3">
+  <span class="text-white/60 text-sm">Share:</span>
+
+  <!-- Facebook -->
+  <a
+    href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Share on Facebook"
+    class="size-10 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 text-white transition"
+  >
+    <Icon name="bi:facebook" class="w-5 h-5" />
+  </a>
+
+  <!-- X / Twitter -->
+  <a
+    href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Share on X"
+    class="size-10 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 text-white transition"
+  >
+    <Icon name="bi:twitter-x" class="w-5 h-5" />
+  </a>
+
+  <!-- LinkedIn -->
+  <a
+    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Share on LinkedIn"
+    class="size-10 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 text-white transition"
+  >
+    <Icon name="bi:linkedin" class="w-5 h-5" />
+  </a>
+
+  <!-- Copy Link -->
+  <button
+    type="button"
+    aria-label="Copy link"
+    class="size-10 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 text-white transition"
+    onclick={`navigator.clipboard.writeText('${url}')`}
+  >
+    <Icon name="bi:link-45deg" class="w-5 h-5" />
+  </button>
+</div>

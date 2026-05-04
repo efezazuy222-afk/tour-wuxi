@@ -1,0 +1,110 @@
+---
+import { Icon } from "astro-icon/components";
+
+export interface Props {
+  currentPage: number;
+  totalPages: number;
+  basePath?: string; // default "/blog"
+}
+
+const { currentPage, totalPages, basePath = "/blog" } = Astro.props;
+
+const getPageUrl = (page: number) => {
+  if (page === 1) return basePath;
+  return `${basePath}/page/${page}`;
+};
+
+// =========================
+// Pagination Logic (UNCHANGED)
+// =========================
+const getPageNumbers = () => {
+  const delta = 2;
+  const range: number[] = [];
+  const rangeWithDots: (number | string)[] = [];
+
+  for (
+    let i = Math.max(2, currentPage - delta);
+    i <= Math.min(totalPages - 1, currentPage + delta);
+    i++
+  ) {
+    range.push(i);
+  }
+
+  if (currentPage - delta > 2) {
+    rangeWithDots.push(1, "...");
+  } else {
+    rangeWithDots.push(1);
+  }
+
+  rangeWithDots.push(...range);
+
+  if (currentPage + delta < totalPages - 1) {
+    rangeWithDots.push("...", totalPages);
+  } else if (totalPages > 1) {
+    rangeWithDots.push(totalPages);
+  }
+
+  return rangeWithDots;
+};
+
+const pages = getPageNumbers();
+---
+
+<nav class="flex items-center gap-2" aria-label="Pagination">
+
+  <!-- Previous -->
+  {currentPage > 1 ? (
+    <a
+      href={getPageUrl(currentPage - 1)}
+      aria-label="Previous page"
+      class="size-10 flex items-center justify-center rounded-lg border border-white/20 text-white/70 hover:text-white hover:bg-white/10 transition"
+    >
+      <Icon name="bi:chevron-left" />
+    </a>
+  ) : (
+    <span
+      class="size-10 flex items-center justify-center rounded-lg border border-white/10 text-white/30 cursor-not-allowed"
+    >
+      <Icon name="bi:chevron-left" />
+    </span>
+  )}
+
+  <!-- Pages -->
+  {pages.map((page) =>
+    page === "..." ? (
+      <span class="size-10 flex items-center justify-center text-white/40">
+        …
+      </span>
+    ) : (
+      <a
+        href={getPageUrl(page as number)}
+        aria-label={`Page ${page}`}
+        aria-current={currentPage === page ? "page" : undefined}
+        class={`size-10 flex items-center justify-center rounded-lg font-semibold transition ${
+          currentPage === page
+            ? "bg-white text-black"
+            : "border border-white/20 text-white/70 hover:text-white hover:bg-white/10"
+        }`}
+      >
+        {page}
+      </a>
+    )
+  )}
+
+  <!-- Next -->
+  {currentPage < totalPages ? (
+    <a
+      href={getPageUrl(currentPage + 1)}
+      aria-label="Next page"
+      class="size-10 flex items-center justify-center rounded-lg border border-white/20 text-white/70 hover:text-white hover:bg-white/10 transition"
+    >
+      <Icon name="bi:chevron-right" />
+    </a>
+  ) : (
+    <span
+      class="size-10 flex items-center justify-center rounded-lg border border-white/10 text-white/30 cursor-not-allowed"
+    >
+      <Icon name="bi:chevron-right" />
+    </span>
+  )}
+</nav>

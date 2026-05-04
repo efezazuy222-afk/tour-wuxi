@@ -1,0 +1,32 @@
+---
+import { Icon } from "astro-icon/components";
+
+export interface Props {
+  threshold?: number;
+  class?: string;
+}
+
+const {
+  threshold = 300,
+  class: extraClass = "",
+} = Astro.props;
+---
+
+<button
+  type="button"
+  x-data=`{ show: false }`
+  @scroll.window={`show = (window.pageYOffset > ${threshold})`}
+  x-show="show"
+  x-transition:enter="transition ease-out duration-300"
+  x-transition:enter-start="opacity-0 scale-90"
+  x-transition:enter-end="opacity-100 scale-100"
+  x-transition:leave="transition ease-in duration-200"
+  x-transition:leave-start="opacity-100 scale-100"
+  x-transition:leave-end="opacity-0 scale-90"
+  @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
+  aria-label="Back to top"
+  class={`fixed rounded-lg bottom-4 right-4 border border-white/10 backdrop-blur bg-blue-800/80 text-white size-10 flex items-center justify-center shadow-lg hover:bg-blue-900 transition z-50 ${extraClass}`}
+  style="display: none;"
+>
+  <Icon name="bi:arrow-up" class="w-5 h-5 md:w-6 md:h-6" />
+</button>

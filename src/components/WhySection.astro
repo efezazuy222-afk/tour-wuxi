@@ -1,0 +1,113 @@
+---
+import { Icon } from 'astro-icon/components';
+import FishWidget from './FishWidget.astro';
+import BubbleWidget from './BubbleWidget.astro';
+
+export interface WhyCard {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+export interface WhySectionProps {
+  id?: string;
+  title?: string;
+  cards?: WhyCard[];
+  backgroundImage?: string;
+  minHeight?: string;
+  className?: string;
+}
+
+const {
+  id = "intro",
+  title = "为什么选择澜青",
+cards = [
+  {
+    icon: "bi:person-badge",
+    title: "无锡本地向导",
+    description: "每位向导都是土生土长的无锡人，持证上岗，对太湖鼋头渚、灵山、惠山古镇如数家珍。"
+  },
+  {
+    icon: "bi:shield-check",
+    title: "品质安全保障",
+    description: "正规旅行社资质，全程旅游保险，合作酒店餐厅均经实地筛选，出行无忧。"
+  },
+  {
+    icon: "bi:people",
+    title: "精品小团定制",
+    description: "每团不超12人，支持家庭、情侣、摄影等主题定制，拒绝走马观花。"
+  },
+  {
+    icon: "bi:leaf",
+    title: "深度文化体验",
+    description: "听惠山泥人故事、品太湖三白、坐摇橹船穿行水巷，体验真正的江南水乡。"
+  },
+  {
+    icon: "bi:sliders",
+    title: "灵活行程调整",
+    description: "天气变化、临时起意？行程随时微调，你的旅途你做主。"
+  },
+  {
+    icon: "bi:headset",
+    title: "全程贴心服务",
+    description: "从咨询到回程，澜青客服24小时在线，任何问题第一时间响应。"
+  },
+],
+  backgroundImage = "/img/about-bg.jpg",
+  minHeight = "78vh",
+  className = "",
+} = Astro.props as WhySectionProps;
+---
+
+<!-- Why Section -->
+<section
+  id={id}
+  class={`relative overflow-hidden py-16 flex items-center ${className}`}
+  style={`
+    background-image: url('${backgroundImage}');
+    background-size: cover;
+    background-position: center;
+    min-height: ${minHeight};
+  `}
+>
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-linear-to-b from-slate-950/70 via-slate-950/50 to-slate-950/85"></div>
+
+  <!-- Soft Light Rays -->
+  <div class="pointer-events-none absolute inset-0 opacity-40 mix-blend-screen">
+    <div class="absolute -top-24 left-1/4 h-[140%] w-40 rotate-12 bg-linear-to-b from-cyan-200/20 via-cyan-200/0 to-transparent blur-2xl"></div>
+    <div class="absolute -top-24 left-2/3 h-[140%] w-56 -rotate-6 bg-linear-to-b from-sky-200/15 via-sky-200/0 to-transparent blur-2xl"></div>
+  </div>
+
+  <!-- Fish Layer -->
+  <FishWidget id="fish-layer" />
+
+  <!-- Bubble Layer -->
+  <BubbleWidget id="bubble-layer" />
+
+  <!-- Content -->
+  <div class="relative w-full max-w-6xl mx-auto px-4 z-20">
+    <h2 class="text-2xl md:text-3xl font-semibold text-white mb-6">
+      {title}
+    </h2>
+
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {cards.map((card) => (
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur">
+          <div class="flex items-center gap-3">
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
+              <Icon name={card.icon} class="text-white text-lg w-5 h-5" />
+            </div>
+            <div class="text-lg font-semibold text-white">{card.title}</div>
+          </div>
+          <div class="mt-2 text-base text-white/70">
+            {card.description}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Bottom Fade -->
+  <div class="absolute bottom-0 left-0 right-0 h-28 bg-linear-to-t from-blue-950 to-transparent"></div>
+</section>

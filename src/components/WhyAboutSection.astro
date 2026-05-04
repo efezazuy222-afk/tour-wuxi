@@ -1,0 +1,95 @@
+---
+import WhyCard from "@src/components/WhyCard.astro";
+
+/* =========================
+   Types
+========================= */
+export interface WhyItem {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+export interface WhyAboutSectionProps {
+  id?: string;
+  title: string;
+  backgroundImage: string;
+  items: WhyItem[];
+}
+
+/* =========================
+   Default / Sample Data
+========================= */
+const {
+  id = "why-about",
+  title = "为什么选择澜青旅行社",
+  backgroundImage = "/img/about-sea.jpg",
+  items = [
+  {
+    icon: "bi:person-badge",
+    title: "无锡本地持证向导",
+    description:
+      "每一位向导都是土生土长的无锡人，持国家导游证，对太湖鼋头渚、灵山、惠山古镇如数家珍。",
+  },
+  {
+    icon: "bi:shield-check",
+    title: "安全与品质保障",
+    description:
+      "正规旅行社资质，全程保险覆盖，合作酒店与餐厅均经实地考察筛选，出行无忧。",
+  },
+  {
+    icon: "bi:leaf",
+    title: "深度文化体验",
+    description:
+      "不做走马观花，带你听惠山泥人故事、品太湖三白、坐摇橹船穿行水巷，体验真正的江南。",
+  },
+  {
+    icon: "bi:people",
+    title: "精品小团定制",
+    description:
+      "每团不超过12人，可根据家庭、情侣、摄影爱好者等不同需求定制专属路线。",
+  },
+  {
+    icon: "bi:sliders",
+    title: "灵活行程调整",
+    description:
+      "天气变化、临时起意？行程可随时微调，让你的旅途自由随心。",
+  },
+  {
+    icon: "bi:headset",
+    title: "全程贴心服务",
+    description:
+      "从咨询到出行再到回程，澜青客服24小时在线，任何问题第一时间解决。",
+  },
+],
+} = Astro.props as WhyAboutSectionProps;
+---
+
+<!-- Why About Section -->
+<section
+  id={id}
+  class="relative py-16 md:py-20 overflow-hidden mb-6"
+  style={`background-image: url('${backgroundImage}');
+         background-size: cover;
+         background-position: center;
+         background-attachment: fixed;`}
+>
+  <!-- overlay -->
+  <div class="absolute inset-0 bg-linear-to-b from-slate-950/50 via-slate-950/30 to-slate-950/20"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-4">
+    <h2 class="text-3xl md:text-4xl font-semibold text-white text-shadow mb-10">
+      {title}
+    </h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {items.map((item) => (
+        <WhyCard
+          icon={item.icon}
+          title={item.title}
+          description={item.description}
+        />
+      ))}
+    </div>
+  </div>
+</section>
