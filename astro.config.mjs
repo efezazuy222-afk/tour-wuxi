@@ -10,16 +10,7 @@ export default defineConfig({
   base: '/',
   output: 'static',
 
-  fonts: [
-    {
-      name: 'Inter',
-      cssVariable: '--font-inter',
-      provider: fontProviders.google(),
-      weights: ['300', '400', '500', '600', '700'],
-    },
-  ],
-
-  integrations: [
+    integrations: [
     icon({
        include: {
         // Include Bootstrap icons used in the project
