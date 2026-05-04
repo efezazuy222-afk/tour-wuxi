@@ -1,7 +1,6 @@
 ---
 import Header from '@src/components/Header.astro';
 import Footer from '@src/components/Footer.astro';
-import { Font } from "astro:assets";
 
 import 'glightbox/dist/css/glightbox.min.css';
 import '@src/styles/style.css';
@@ -40,7 +39,6 @@ const {
 
     <link rel="canonical" href={Astro.url?.href || "https://ocean.madethemes.com"} />
     <link rel="icon" type="image/x-icon" href="/img/favicon.png" />
-    <Font cssVariable="--font-inter" preload />
   </head>
 
   <body class="font-sans bg-blue-950">
