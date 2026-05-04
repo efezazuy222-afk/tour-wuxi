@@ -13,15 +13,12 @@
     "@iconify-json/bi": "^1.2.7",
     "@tailwindcss/vite": "^4.2.1",
     "alpinejs": "^3.15.8",
-    "astro": "^6",
+    "astro": "^6.2.1",
     "astro-icon": "^1.1.5",
     "glightbox": "^3.3.1",
     "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
     "@types/alpinejs": "^3.13.11"
-  },
-  "overrides": {
-  "vite": "^7"
-}
+  }
 }
