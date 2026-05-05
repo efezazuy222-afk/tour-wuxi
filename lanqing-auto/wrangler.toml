@@ -1,0 +1,7 @@
+name = "lanqing-auto-publish"
+main = "worker.js"
+compatibility_date = "2025-05-04"
+no_bundle = true
+
+[triggers]
+crons = ["0 14 * * *"]
